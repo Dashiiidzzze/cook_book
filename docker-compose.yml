@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: ./backend                     # Путь к Dockerfile
+    ports:
+      - "8080:8080"                  # Проброс порта для веб-приложения
+    depends_on:
+      - db                           # Сначала запускается база данных
+    environment:
+      DATABASE_URL: postgres://cookbook_user:secure_password@db:5432/cookbook
+      # Формат: postgres://<пользователь>:<пароль>@<хост>:<порт>/<база данных>
+
+  db:
+    image: postgres:alpine           # Готовый образ PostgreSQL для Alpine
+    environment:
+      POSTGRES_USER: cookbook_user   # Пользователь базы данных
+      POSTGRES_PASSWORD: secure_password # Пароль пользователя
+      POSTGRES_DB: cookbook          # Имя базы данных
+    ports:
+      - "5432:5432"                  # Проброс порта для PostgreSQL
+    volumes:
+      - db_data:/var/lib/postgresql/data # Том для хранения данных
+    restart: always                  # Перезапуск при сбое
+
+  # frontend:
+  #   build:
+  #     context: ./frontend             # Путь к папке с фронтендом
+  #   ports:
+  #     - "3000:3000"                   # Проброс порта для фронтенда
+  #   volumes:
+  #     - ./frontend:/app               # Горячая перезагрузка кода
+  #   stdin_open: true
+  #   tty: true                         # Для работы с терминалом внутри контейнера
+  #   restart: always                   # Перезапуск при сбое
+  #   depends_on:
+  #     - web                           # Сначала запускается бекенд
+  #     - db                            # Сначала запускается база данных
+
+
+volumes:
+  db_data:                           # Том для базы данных
