@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница - Кулинарная книга</title>
+    <link rel="stylesheet" href="css/myrecipes.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="shapka">
+        <div class="toolbar">
+            <a href="/main" class="nav-link">Главная</a>
+            <a href="/categories" class="nav-link">Категории</a>
+            <a href="/myrecipes" class="nav-link">Мои рецепты</a>
+            <a href="/create" class="nav-link">Добавить рецепт</a>
+            <a href="/profile" class="nav-link">Профиль</a>
+            <a href="/login" class="nav-link">Войти</a>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="searchBar" placeholder="Искать рецепт...">
+            <button id="filterButton">Фильтры</button>
+            <div id="filters" class="filter-popup">
+                <label>
+                    <input type="checkbox" value="dessert"> Десерты
+                </label>
+                <label>
+                    <input type="checkbox" value="main"> Основные блюда
+                </label>
+                <label>
+                    <input type="checkbox" value="salad"> Салаты
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <!-- Секция рецептов -->
+    <main>
+        <section id="recipes-section">
+            <h2>Последние рецепты</h2>
+            <div id="recipes" class="recipe-container">
+                <!-- Здесь будут загружены рецепты -->
+            </div>
+        </section>
+    </main>
+
+    <script src="js/myrecipes.js"></script>
+</body>
+</html>

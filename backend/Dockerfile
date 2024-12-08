@@ -16,10 +16,10 @@ RUN go mod download
 COPY . ./
 
 # Собираем бинарный файл приложения
-RUN go build -o main .
+RUN go build ./cmd/main.go
 
 # Указываем порт, который будет использовать приложение
 EXPOSE 8080
 
 # Запускаем приложение
-CMD ["./main"]
+CMD ["./main"] 
