@@ -15,22 +15,7 @@
             <a href="/myrecipes" class="nav-link">Мои рецепты</a>
             <a href="/create" class="nav-link">Добавить рецепт</a>
             <a href="/profile" class="nav-link">Профиль</a>
-            <a href="/login" class="nav-link">Войти</a>
-        </div>
-        <div class="search-bar">
-            <input type="text" id="searchBar" placeholder="Искать рецепт...">
-            <button id="filterButton">Фильтры</button>
-            <div id="filters" class="filter-popup">
-                <label>
-                    <input type="checkbox" value="dessert"> Десерты
-                </label>
-                <label>
-                    <input type="checkbox" value="main"> Основные блюда
-                </label>
-                <label>
-                    <input type="checkbox" value="salad"> Салаты
-                </label>
-            </div>
+            <a href="/auth" class="nav-link">Войти</a>
         </div>
     </header>
 
@@ -39,7 +24,12 @@
         <section id="recipes-section">
             <h2>Создание рецепта</h2>
             <div id="recipes" class="recipe-container">
-                <!-- Здесь будут загружены рецепты -->
+                <div class="recipe-card">
+                    <h3>Название рецепта</h3>
+                    <p>Время приготовления:</p>
+                    <p>И тд и тп, только пользователь сам вводит:</p>
+                    <!-- Здесь будут загружены рецепты -->
+                </div>
             </div>
         </section>
     </main>

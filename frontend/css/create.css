@@ -15,7 +15,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px; /* Отступ от фотографии до тулбара */
+    margin-bottom: 65px; /* Отступ от фотографии до тулбара */
 }
 
 .toolbar {
@@ -36,7 +36,7 @@ body {
     transition: background-color 0.3s ease;   /* Плавный переход цвета фона */
 
     position: relative;
-    top: 200px; /* Сдвигаем блок вниз */
+    top: 131px; /* Сдвигаем блок вниз */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,63 +48,22 @@ body {
     color: black;
 }
 
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    top: 250px; /* Сдвигаем блок вниз */
-    margin-top: 100px;
-}
-
-.search-bar input {
-    width: 300px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.search-bar button {
-    padding: 10px 15px;
-    border: none;
-    background-color: #ff7c00;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 /* Стиль для заголовка h2 */
 #recipes-section h2 {
     text-transform: uppercase; /* Преобразует текст в верхний регистр */
     text-align: center;        /* Центрирует текст по горизонтали */
     font-size: 24px;           /* Увеличивает размер текста */
     font-weight: bold;         /* Делает текст жирным */
-    margin: 65px 0;            /* Отступы сверху и снизу */
+    margin: 0 0;            /* Отступы сверху и снизу */
     color: #333;               /* Цвет текста (можно изменить под стиль сайта) */
 }
-  
 
-.filter-popup {
-    display: none;
-    position: absolute;
-    top: 120px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    z-index: 10;
-}
-
-.filter-popup label {
-    display: block;
-    margin: 5px 0;
-}
 
 /* стиль рецептов */
 .recipe-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
     justify-content: center;
     padding: 20px;
 
@@ -116,7 +75,7 @@ body {
 }
 
 .recipe-card {
-    width: 200px;
+    width: 1000px;
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: white;
@@ -126,18 +85,16 @@ body {
     transition: transform 0.2s ease;
 }
 
-.recipe-card:hover {
-    transform: scale(1.05);
-}
-
 .recipe-card h3 {
-    margin: 30;
-    font-size: 16px;
-    color: #333;
+    text-align: center;        /* Центрирует текст по горизонтали */
+    font-weight: bold;         /* Делает текст жирным */
+    margin: 10px;
+    font-size: 40px;
+    color: #ff7c00;;
 }
 
 .recipe-card p {
     margin: 30px 0;
-    font-size: 14px;
+    font-size: 20px;
     color: #555;
 }

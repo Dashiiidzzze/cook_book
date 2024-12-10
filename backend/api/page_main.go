@@ -7,30 +7,16 @@ import (
 	"net/http"
 )
 
-// type MainSearchRequest struct {
-// 	Name      string `json:"name"`
-// 	Dish_type string `json:"dish_type"`
-// 	Cook_time string `json:"cook_time"`
-// 	Holiday   string `json:"holiday"`
+// type LastRecipe struct {
+// 	ID          int          `json:"id"`
+// 	Name        string       `json:"name"`
+// 	CookTime    string       `json:"cook_time"`
+// 	Ingredients []Ingredient `json:"ingredients"`
 // }
 
-// type MainSearchResponse struct {
-// 	ID          int       `json:"id"`
-// 	Name        string    `json:"name"`
-// 	Cook_time   time.Time `json:"cook_time"`
-// 	Ingredients []string  `json:"Ingredients"`
+// type Ingredient struct {
+// 	Name string `json:"name"`
 // }
-
-type LastRecipe struct {
-	ID          int          `json:"id"`
-	Name        string       `json:"name"`
-	CookTime    string       `json:"cook_time"`
-	Ingredients []Ingredient `json:"ingredients"`
-}
-
-type Ingredient struct {
-	Name string `json:"name"`
-}
 
 // рендеринг главной страницы
 func PageMain(w http.ResponseWriter, r *http.Request) {
@@ -53,9 +39,15 @@ func PageMainRecipes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Фильтры
+	filters := map[string]interface{}{
+		"is_private": false, // Только общедоступные
+		"limit":      20,    // Лимит в 10 рецептов
+	}
+
 	// Получение последних 20 рецептов из базы данных
-	recipes := repo.GetLastRecipes()
-	if recipes == nil {
+	recipes, err := repo.GetRecipesWithFilters(filters)
+	if err != nil {
 		http.Error(w, "Ошибка базы данных", http.StatusInternalServerError)
 		return
 	}

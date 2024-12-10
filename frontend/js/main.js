@@ -30,14 +30,17 @@ function displayRecipes(recipes) {
             <img src="${recipe.photo}" alt="Фото рецепта" class="recipe-photo">
             <h3>${recipe.name}</h3>
             <p>Время приготовления: ${recipe.cook_time}</p>
-            <p>Ингредиенты: ${recipe.ingredients}</p>
+            <p>Ингредиенты: ${recipe.ingredients
+            .map(ing => `${ing.name}`) // Форматируем каждый ингредиент
+            .join(', ')}</p>
+            
         `;
         // Добавляем обработчик клика на всю карточку
         recipeCard.addEventListener('click', () => {
             window.location.href = `/recipe?recipe_id=${recipe.id}`; // Переход на страницу рецепта
         });
         // <button class="recipe-button" data-id="${recipe.id}">Перейти к рецепту</button>
-        // <p>Ингредиенты: ${recipe.ingredients.join(', ')}</p>
+        // <p>Ингредиенты: ${recipe.ingredients.join(', ')}</p>             <p>Ингредиенты: ${recipe.ingredients}</p>
         recipesContainer.appendChild(recipeCard);
     });
 }

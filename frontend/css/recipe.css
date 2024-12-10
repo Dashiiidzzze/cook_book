@@ -40,7 +40,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} 
 
 .nav-link:hover {   /* Более тёмный оттенок при наведении */
     background-color: #ff7c00;

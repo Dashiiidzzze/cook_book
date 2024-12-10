@@ -20,15 +20,16 @@ func ListeningHTTP(APIport int) {
 	http.HandleFunc("/categories", PageCategories)                //страница категорий
 	http.HandleFunc("/categories/recipes", PageCategoriesRecipes) // рецепты в категории
 	http.HandleFunc("/categories/all", PageCategoriesAll)         // все категории
-	http.HandleFunc("/myrecipes", PageMyRecipes)                  // страница с моими рецептами
-	http.HandleFunc("/myrecipes/recipes", PageMyRecipes)          // мои рецепты
-	http.HandleFunc("/create", PageCreate)                        // создание рецепта
-	http.HandleFunc("/profile", PageProfile)                      // профиль пользователя (POST, GET, DELETE)
-	http.HandleFunc("/login", PageLogin)                          // профиль пользователя (POST, GET, DELETE)
 
-	http.HandleFunc("/register", internal.RegisterHandler)        // Регистрация
-	http.HandleFunc("/login", loginHandler)                       // Вход
-	http.HandleFunc("/protected", authenticate(protectedHandler)) // Защищенный маршрут
+	// далее запросы требуют аутентификации
+	http.HandleFunc("/myrecipes", internal.AuthMiddleware(PageMyRecipes))                // страница с моими рецептами
+	http.HandleFunc("/myrecipes/recipes", internal.AuthMiddleware(PageMyRecipesRecipes)) // мои рецепты
+	http.HandleFunc("/create", internal.AuthMiddleware(PageCreate))                      // создание рецепта
+	http.HandleFunc("/profile", internal.AuthMiddleware(PageProfile))                    // профиль пользователя (POST, GET, DELETE)
+	http.HandleFunc("/auth", PageLogin)                                                  // профиль пользователя (POST, GET, DELETE)
+	http.HandleFunc("/auth/register", internal.RegisterHandler)                          // Регистрация
+	http.HandleFunc("/auth/login", internal.LoginHandler)                                // Вход
+	//http.HandleFunc("/protected", internal.Authenticate(internal.ProtectedHandler)) // Защищенный маршрут
 
 	// Запуск сервера
 	log.Println("Сервер запущен на порту " + strconv.Itoa(APIport) + " ...")

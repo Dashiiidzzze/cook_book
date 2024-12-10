@@ -109,7 +109,9 @@ function displayRecipes(recipes, categoryName) {
             <img src="${recipe.photo}" alt="Фото рецепта" class="recipe-photo">
             <h3>${recipe.name}</h3>
             <p>Время приготовления: ${recipe.cook_time}</p>
-            <p>Ингредиенты: ${recipe.ingredients}</p>
+            <p>Ингредиенты: ${recipe.ingredients
+            .map(ing => `${ing.name}`) // Форматируем каждый ингредиент
+            .join(', ')}</p>
         `;
         // Добавляем обработчик клика на всю карточку
         recipeCard.addEventListener('click', () => {

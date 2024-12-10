@@ -41,20 +41,12 @@ function displayRecipe(recipe) {
         <h3>${recipe.name}</h3>
         <p>Время приготовления: ${recipe.cook_time}</p>
         <p>Категория: ${recipe.dish_type}</p>
-        <p>Ингредиенты: ${recipe.ingredients}</p>
+        <p>Ингредиенты: ${recipe.ingredients
+            .map(ing => `${ing.name} (${ing.quantity})`) // Форматируем каждый ингредиент
+            .join(', ')}</p>
         <p>Рецепт: ${recipe.instructions}</p>
         <img src="${recipe.photo}" alt="Фото рецепта" class="recipe-photo">
     `;
-    // recipeCard.innerHTML = `
-    //     <h3>${recipe.name || 'Название отсутствует'}</h3>
-    //     <p>Время приготовления: ${recipe.cook_time || 'Не указано'}</p>
-    //     <p>Категория: ${recipe.dish_type || 'Не указана'}</p>
-    //     <p>Ингредиенты: ${recipe.ingredients || 'Нет данных'}</p>
-    //     <p>Рецепт: ${recipe.instructions || 'Инструкции отсутствуют'}</p>
-    //     <img src="${recipe.photo || 'placeholder.jpg'}" 
-    //             onerror="this.src='placeholder.jpg'" 
-    //             alt="Фото рецепта" class="recipe-photo">
-    // `;
     recipesContainer.appendChild(recipeCard);
 }
 
