@@ -7,17 +7,6 @@ import (
 	"net/http"
 )
 
-// type LastRecipe struct {
-// 	ID          int          `json:"id"`
-// 	Name        string       `json:"name"`
-// 	CookTime    string       `json:"cook_time"`
-// 	Ingredients []Ingredient `json:"ingredients"`
-// }
-
-// type Ingredient struct {
-// 	Name string `json:"name"`
-// }
-
 // рендеринг главной страницы
 func PageMain(w http.ResponseWriter, r *http.Request) {
 	log.Println("Запрос к главной странице:", r.URL.Path)
@@ -57,18 +46,22 @@ func PageMainRecipes(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(recipes)
 }
 
-// // поиск на главной странице
-// func PageMainSearch(w http.ResponseWriter, r *http.Request) {
-// 	// Парсинг JSON-запроса
-// 	var req MainSearchRequest
-// 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-// 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-// 		//log.Println("Это информационное сообщение")
-// 		return
-// 	}
+func PageMainFilters(w http.ResponseWriter, r *http.Request) {
+	log.Println("Запрос к фильтрам:", r.URL.Path)
+	if r.URL.Path != "/main/filters" {
+		http.NotFound(w, r)
+		return
+	}
 
-// 	// recipes := internal.Search(MainSearchRequest.Name, MainSearchRequest.Dish_type, MainSearchRequest.Holiday, MainSearchRequest.Cook_time)
+	// Получение последних 20 рецептов из базы данных
+	ingredients, err := repo.GetIngredients(nil, nil)
+	if err != nil {
+		http.Error(w, "Ошибка базы данных", http.StatusInternalServerError)
+		log.Printf("Ошибка базы данных при получении категорий")
+		return
+	}
 
-// 	// w.Header().Set("Content-Type", "application/json")
-// 	// json.NewEncoder(w).Encode(recipes)
-// }
+	// Указываем, что возвращаем JSON
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(ingredients)
+}

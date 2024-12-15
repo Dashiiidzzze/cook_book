@@ -57,3 +57,21 @@ func GetUser(name string) (int, string, error) {
 
 	return userID, passwdHash, nil
 }
+
+// Обновление пароля пользователя
+func UpdatePassword(username, newPasswordHash string) error {
+	query := "UPDATE users SET password_hash = $1 WHERE username = $2"
+	// Выполнение запроса
+	result, err := GetDB().Exec(context.Background(), query, newPasswordHash, username)
+	if err != nil {
+		return errors.New("ошибка выполнения запроса на обновление пароля")
+	}
+
+	// Проверяем количество затронутых строк
+	rowsAffected := result.RowsAffected()
+	if rowsAffected == 0 {
+		return errors.New("пользователь не найден или пароль не изменился")
+	}
+
+	return nil
+}

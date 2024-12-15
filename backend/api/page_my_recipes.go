@@ -4,6 +4,7 @@ import (
 	"cookbook/internal"
 	"cookbook/repo"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -21,7 +22,7 @@ func PageMyRecipes(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "../frontend/myrecipes.html") // Путь к HTML-файлу
 }
 
-// отправка рецептов на главную
+// отправка рецептов
 func PageMyRecipesRecipes(w http.ResponseWriter, r *http.Request) {
 	log.Println("Запрос к моим рецептам:", r.URL.Path)
 	if r.URL.Path != "/myrecipes/recipes" || r.Method != http.MethodGet {
@@ -47,4 +48,61 @@ func PageMyRecipesRecipes(w http.ResponseWriter, r *http.Request) {
 	// Указываем, что возвращаем JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(recipes)
+}
+
+// deleteRecipe обрабатывает запрос на удаление рецепта из БД
+func PageMyRecipesDeleteRecipe(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
+		return
+	}
+
+	recipeID := r.URL.Path[len("/myrecipes/recipes/"):]
+	if recipeID == "" {
+		http.Error(w, "Не указан ID рецепта", http.StatusBadRequest)
+		return
+	}
+
+	// // Получаем ID рецепта из параметров запроса
+	// recipeID := r.URL.Query().Get("id")
+	// if recipeID == "" {
+	// 	http.Error(w, "Не указан ID рецепта", http.StatusBadRequest)
+	// 	return
+	// }
+
+	userID := internal.GetUserIDToken(w, r)
+
+	err := repo.DeleteRecipe(recipeID, userID)
+	if err != nil {
+		http.Error(w, "Не удалось удалить рецепт", http.StatusBadRequest)
+		return
+	}
+
+	// Успешный ответ
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(fmt.Sprintf("Рецепт с ID %s успешно удален", recipeID)))
+}
+
+func PageMyRecipesFilters(w http.ResponseWriter, r *http.Request) {
+	log.Println("Запрос к фильтрам:", r.URL.Path)
+	if r.URL.Path != "/myrecipes/filter" {
+		http.NotFound(w, r)
+		return
+	}
+
+	userId := internal.GetUserIDToken(w, r)
+
+	fmt.Println(userId)
+
+	// Получение последних 20 рецептов из базы данных
+	ingredients, err := repo.GetIngredients(&userId, nil)
+	if err != nil {
+		http.Error(w, "Ошибка базы данных", http.StatusInternalServerError)
+		log.Printf("Ошибка базы данных при получении категорий")
+		return
+	}
+
+	// Указываем, что возвращаем JSON
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(ingredients)
 }

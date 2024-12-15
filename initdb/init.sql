@@ -20,7 +20,8 @@ CREATE TABLE recipes (
 -- Таблица категорий
 CREATE TABLE dish_types (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE
+    name VARCHAR(255) NOT NULL UNIQUE,
+    photo BYTEA
 );
 
 -- Таблица связи рецептов и категорий
@@ -42,6 +43,22 @@ CREATE TABLE recipe_ingredients (
     recipe_id INT REFERENCES recipes(id) ON DELETE CASCADE,
     ingredient_id INT REFERENCES ingredients(id) ON DELETE CASCADE,
     quantity VARCHAR(100)
+);
+
+-- Таблица связи рецептов и этапов приготовления                добавлена таблица
+CREATE TABLE recipe_step (
+    id SERIAL PRIMARY KEY,
+    recipe_id INT REFERENCES recipes(id) ON DELETE CASCADE,
+    instructions TEXT,
+    photo BYTEA
+);
+
+-- Таблица комментариев к рецепту                               добавлена таблица
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    recipe_id INT REFERENCES recipes(id) ON DELETE CASCADE,
+    username VARCHAR(100),
+    comment TEXT
 );
 
 -- Заполнение таблицы dish_types

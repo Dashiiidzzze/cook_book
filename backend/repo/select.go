@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 	"database/sql"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"strings"
@@ -12,7 +13,7 @@ type LastRecipe struct {
 	ID          int          `json:"id"`
 	Name        string       `json:"name"`
 	CookTime    string       `json:"cook_time"`
-	Photo       []byte       `json:"photo"`
+	Photo       string       `json:"photo"`
 	Ingredients []Ingredient `json:"ingredients"`
 }
 
@@ -55,12 +56,6 @@ func GetRecipesWithFilters(filters map[string]interface{}) ([]LastRecipe, error)
 		paramCounter++
 	}
 
-	// if isFavorite, ok := filters["is_favorite"]; ok {
-	// 	conditions = append(conditions, fmt.Sprintf("r.is_favorite = $%d", paramCounter))
-	// 	args = append(args, isFavorite)
-	// 	paramCounter++
-	// }
-
 	if isPrivate, ok := filters["is_private"]; ok {
 		conditions = append(conditions, fmt.Sprintf("r.is_private = $%d", paramCounter))
 		args = append(args, isPrivate)
@@ -73,9 +68,26 @@ func GetRecipesWithFilters(filters map[string]interface{}) ([]LastRecipe, error)
 		paramCounter++
 	}
 
-	if ingredientName, ok := filters["ingredient_name"]; ok {
-		conditions = append(conditions, fmt.Sprintf("i.name ILIKE $%d", paramCounter))
-		args = append(args, "%"+ingredientName.(string)+"%")
+	// Фильтр по ingredient_ids ИЗМЕНИТЬ
+	if ingredientIDs, ok := filters["ingredient_ids"].([]string); ok {
+		placeholders := []string{}
+		for range ingredientIDs {
+			placeholders = append(placeholders, fmt.Sprintf("$%d", paramCounter))
+			paramCounter++
+		}
+
+		// Добавляем подзапрос для фильтрации рецептов
+		conditions = append(conditions, fmt.Sprintf("r.id IN (SELECT ri.recipe_id FROM recipe_ingredients ri WHERE ri.ingredient_id IN (%s))", strings.Join(placeholders, ",")))
+
+		// Добавляем аргументы для подзапроса
+		for _, id := range ingredientIDs {
+			args = append(args, id)
+		}
+	}
+
+	if recipeName, ok := filters["recipe_name"]; ok {
+		conditions = append(conditions, fmt.Sprintf("r.name ILIKE $%d", paramCounter))
+		args = append(args, "%"+recipeName.(string)+"%")
 		paramCounter++
 	}
 
@@ -117,6 +129,12 @@ func GetRecipesWithFilters(filters map[string]interface{}) ([]LastRecipe, error)
 			continue
 		}
 
+		// Преобразуем photo в строку base64
+		encodedPhoto := ""
+		if recipePhoto != nil {
+			encodedPhoto = base64.StdEncoding.EncodeToString(recipePhoto)
+		}
+
 		// Проверяем, существует ли рецепт в map
 		recipe, exists := recipeMap[recipeID]
 		if !exists {
@@ -124,7 +142,7 @@ func GetRecipesWithFilters(filters map[string]interface{}) ([]LastRecipe, error)
 				ID:       recipeID,
 				Name:     recipeName,
 				CookTime: recipeCookTime,
-				Photo:    recipePhoto,
+				Photo:    encodedPhoto,
 			}
 			recipeMap[recipeID] = recipe
 			recipes = append(recipes, recipe)

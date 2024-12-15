@@ -29,18 +29,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 const message = action === "login" ? "Вход выполнен!" : "Регистрация успешна!\n\nВойдите в систему";
-                alert(message);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Успех!',
+                    text: message,
+                    timer: 2000, // Окно исчезнет через 2 секунды
+                    showConfirmButton: false,
+                });
+                //alert(message);
 
                 // Для входа сохраняем токен и переходим на главную страницу
+                setTimeout(() => {
                 if (action === "login") {
                     window.location.href = "/main";
                 } else {
                     // При регистрации перенаправляем на страницу входа
                     window.location.href = "/auth";
                 }
+                }, 2000);
             } else {
                 const errorText = await response.text();
-                alert(`Ошибка: ${errorText}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка!',
+                    text: `Ошибка: ${errorText}`,
+                    timer: 2000, // Окно исчезнет через 2 секунды
+                    showConfirmButton: false,
+                });
+                //alert(`Ошибка: ${errorText}`);
             }
         } catch (error) {
             console.error("Ошибка запроса:", error);

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница - Кулинарная книга</title>
+    <title>Просмотр рецепта</title>
     <link rel="stylesheet" href="css/recipe.css">
 </head>
 <body>
@@ -15,20 +15,24 @@
             <a href="/myrecipes" class="nav-link">Мои рецепты</a>
             <a href="/create" class="nav-link">Добавить рецепт</a>
             <a href="/profile" class="nav-link">Профиль</a>
-            <a href="/auth" class="nav-link">Войти</a>
         </div>
     </header>
 
-    <!-- Секция рецепта -->
-    <main>
-        <section id="recipe-section">
-            <h2>Просмотр рецепта</h2>
-            <div id="recipe" class="recipe-container">
-                <!-- Здесь будет загружен рецепт -->
-            </div>
-        </section>
-    </main>
+    <!-- Контейнер для рецепта -->
+    <div id="recipe" class="recipe-container">
+        <!-- Здесь будет отображаться рецепт-->
+    </div>
+
+    <!-- Контейнер для комментариев -->
+    <div id="add-comment-container">
+        <textarea id="comment-text" placeholder="Напишите ваш комментарий..." rows="4"></textarea>
+        <button id="submit-comment" onclick="submitComment()">Отправить</button>
+    </div>
+    <div id="comments" class="comments-container">
+        <!-- Здесь будут отображаться комментарии -->
+    </div>
 
     <script src="js/recipe.js"></script>
 </body>
 </html>
+

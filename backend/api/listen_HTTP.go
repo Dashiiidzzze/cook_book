@@ -14,21 +14,34 @@ func ListeningHTTP(APIport int) {
 
 	http.HandleFunc("/main", PageMain)                // главная страница
 	http.HandleFunc("/main/recipes", PageMainRecipes) // запрос последних 10 рецептов
+	http.HandleFunc("/main/filters", PageMainFilters)
 	//http.HandleFunc("/main/search", PageMainSearch)           // поиск на главной странице
-	http.HandleFunc("/recipe", PageRecipe)                        // страница просмотра рецепта
-	http.HandleFunc("/recipe/view", PageRecipeView)               // запрос рецепта
+	http.HandleFunc("/recipe", PageRecipe)          // страница просмотра рецепта
+	http.HandleFunc("/recipe/view", PageRecipeView) // запрос рецепта
+	http.HandleFunc("/recipe/add-comment", internal.PrivatAuthMiddleware(PageRecipeComment))
 	http.HandleFunc("/categories", PageCategories)                //страница категорий
 	http.HandleFunc("/categories/recipes", PageCategoriesRecipes) // рецепты в категории
 	http.HandleFunc("/categories/all", PageCategoriesAll)         // все категории
 
 	// далее запросы требуют аутентификации
-	http.HandleFunc("/myrecipes", internal.AuthMiddleware(PageMyRecipes))                // страница с моими рецептами
-	http.HandleFunc("/myrecipes/recipes", internal.AuthMiddleware(PageMyRecipesRecipes)) // мои рецепты
-	http.HandleFunc("/create", internal.AuthMiddleware(PageCreate))                      // создание рецепта
-	http.HandleFunc("/profile", internal.AuthMiddleware(PageProfile))                    // профиль пользователя (POST, GET, DELETE)
-	http.HandleFunc("/auth", PageLogin)                                                  // профиль пользователя (POST, GET, DELETE)
-	http.HandleFunc("/auth/register", internal.RegisterHandler)                          // Регистрация
-	http.HandleFunc("/auth/login", internal.LoginHandler)                                // Вход
+	http.HandleFunc("/myrecipes", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(PageMyRecipes)))                // страница с моими рецептами
+	http.HandleFunc("/myrecipes/recipes", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(PageMyRecipesRecipes))) // мои рецепты
+	http.HandleFunc("/myrecipes/recipes/", internal.PrivatAuthMiddleware(PageMyRecipesDeleteRecipe))                       // мои рецепты
+	http.HandleFunc("/myrecipes/filter", internal.PrivatAuthMiddleware(PageMyRecipesFilters))
+
+	http.HandleFunc("/edit", internal.PrivatAuthMiddleware(PageEdit))                                 // мои рецепты
+	http.HandleFunc("/create", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(PageCreate))) // создание рецепта
+	http.HandleFunc("/create/save", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(SaveCreate)))
+	http.HandleFunc("/profile", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(PageProfile))) // профиль пользователя (POST, GET, DELETE)
+	http.HandleFunc("/profile/username", internal.GetUsernameToken)
+	http.HandleFunc("/profile/changepass", internal.ChangePasswordHandler)
+	http.HandleFunc("/profile/logout", internal.LogoutHandler)
+	http.HandleFunc("/auth", PageLogin)                         // профиль пользователя (POST, GET, DELETE)
+	http.HandleFunc("/auth/register", internal.RegisterHandler) // Регистрация
+	http.HandleFunc("/auth/login", internal.LoginHandler)       // Вход
+	//http.HandleFunc("/api/check-token", internal.CheckToken)
+	http.HandleFunc("/api/add-to-myrecipes", internal.PrivatAuthMiddleware(internal.CopyRecipe))
+	http.HandleFunc("/api/search", internal.SearchRecipes)
 	//http.HandleFunc("/protected", internal.Authenticate(internal.ProtectedHandler)) // Защищенный маршрут
 
 	// Запуск сервера

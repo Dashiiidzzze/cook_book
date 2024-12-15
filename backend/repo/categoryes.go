@@ -45,3 +45,23 @@ func GetCategory() ([]DishType, error) {
 
 	return dishTypes, nil
 }
+
+// получение ID категорий по их названиям
+func GetCategoryIDsByNames(names []string) (map[string]int, error) {
+	rows, err := GetDB().Query(context.Background(), "SELECT id, name FROM dish_types WHERE name = ANY($1)", names)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	categoryMap := make(map[string]int)
+	for rows.Next() {
+		var id int
+		var name string
+		if err := rows.Scan(&id, &name); err != nil {
+			return nil, err
+		}
+		categoryMap[name] = id
+	}
+	return categoryMap, nil
+}

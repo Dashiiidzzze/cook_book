@@ -1,10 +1,4 @@
-// Показываем/скрываем фильтры
-// document.getElementById('filterButton').addEventListener('click', () => {
-//     const filterPopup = document.getElementById('filters');
-//     filterPopup.style.display = filterPopup.style.display === 'block' ? 'none' : 'block';
-// });
-
-// Функция для получения последних 10 рецептов
+// Функция для получения рецепта по id
 async function fetchRecipe() {
     try {
         // Получаем recipe_id из текущего URL
@@ -16,39 +10,217 @@ async function fetchRecipe() {
             return;
         }
         const response = await fetch(`/recipe/view?recipe_id=${recipeId}`); // Запрос к API
-        if (!response.ok) throw new Error('Ошибка при загрузке рецептов');
+        if (!response.ok) throw new Error('Ошибка при загрузке рецепта');
 
         const recipe = await response.json();
         displayRecipe(recipe); // Отображаем рецепты
     } catch (error) {
         console.error('Ошибка:', error);
-        alert('Не удалось загрузить рецепты.');
+        alert('Не удалось загрузить рецепт.');
     }
 }
 
-// Отображение рецептов
-function displayRecipe(recipe) {
+function displayRecipe(data) {
     const recipesContainer = document.getElementById('recipe');
+    const commentsContainer = document.getElementById('comments'); // Находим контейнер для комментариев
+
     if (!recipesContainer) {
         console.error('Ошибка: элемент с ID "recipe" не найден');
         return;
     }
-    //recipesContainer.innerHTML = ''; // Очищаем контейнер
+    if (!commentsContainer) {
+        console.error('Ошибка: элемент с ID "comments" не найден');
+        return;
+    }
+    
+    const { recipe, comments } = data; // Извлекаем рецепт и комментарии из данных
 
+    // Создаем карточку рецепта
     const recipeCard = document.createElement('div');
     recipeCard.className = 'recipe-card';
+
+    // Проверка на наличие главного фото, заглушка если отсутствует
+    const recipePhoto = recipe.photo
+        ? `data:image/jpeg;base64,${recipe.photo}`
+        : '../images/default-placeholder.png'; // Путь к заглушке
+    
     recipeCard.innerHTML = `
         <h3>${recipe.name}</h3>
-        <p>Время приготовления: ${recipe.cook_time}</p>
-        <p>Категория: ${recipe.dish_type}</p>
-        <p>Ингредиенты: ${recipe.ingredients
-            .map(ing => `${ing.name} (${ing.quantity})`) // Форматируем каждый ингредиент
-            .join(', ')}</p>
-        <p>Рецепт: ${recipe.instructions}</p>
-        <img src="${recipe.photo}" alt="Фото рецепта" class="recipe-photo">
+        <img src="${recipePhoto}" alt="Фото рецепта" class="recipe-photo">
+        <p><strong>Время приготовления:</strong> ${recipe.cook_time}</p>
+        <p><strong>Категории:</strong> ${recipe.categories.join(', ')}</p> <!-- Категории -->
+        <p><strong>Ингредиенты:</strong></p>
+        <ul>${recipe.ingredients
+            .map(ing => `<li>${ing.name} - ${ing.quantity}</li>`) // Форматируем ингредиенты
+            .join('')}</ul>
+        <p><strong>Рецепт:</strong> ${recipe.instructions}</p>
+        
     `;
     recipesContainer.appendChild(recipeCard);
+
+    // Вставляем этапы приготовления внутри карточки рецепта
+    if (recipe.steps.length > 0) {
+        const stepsSection = document.createElement('div');
+        stepsSection.className = 'steps-section';
+        stepsSection.innerHTML = '<p><strong>Этапы приготовления:</strong></p>';
+        
+        recipe.steps.forEach((step, index) => {
+            const stepCard = document.createElement('div');
+            stepCard.className = 'step-card';
+            stepCard.innerHTML = `
+                <p><strong>Шаг ${index + 1}:</strong> ${step.step}</p>
+                ${step.photo ? `<img src="data:image/jpeg;base64,${step.photo}" alt="Фото шага" class="step-photo">` : ''}
+            `;
+            stepsSection.appendChild(stepCard);
+        });
+
+        recipeCard.appendChild(stepsSection); // Добавляем блок с этапами в карточку рецепта
+    } else {
+        const noSteps = document.createElement('p');
+        noSteps.textContent = 'Нет этапов приготовления для этого рецепта.';
+        recipeCard.appendChild(noSteps); // Сообщение о том, что этапов нет
+    }
+
+    recipesContainer.appendChild(recipeCard); // Добавляем карточку рецепта в контейнер
+
+
+    // // Отображаем комментарии, если они есть
+    // if (comments.length > 0) {
+    //     const commentsSection = document.createElement('div');
+    //     commentsSection.className = 'comments-section';
+    //     commentsSection.innerHTML = '<h4>Комментарии:</h4>';
+        
+    //     comments.forEach(comment => {
+    //         const commentCard = document.createElement('div');
+    //         commentCard.className = 'comment-card';
+    //         commentCard.innerHTML = `
+    //             <p><strong>${comment.username}:</strong> ${comment.text}</p>
+    //         `;
+    //         commentsSection.appendChild(commentCard);
+    //     });
+
+    //     recipesContainer.appendChild(commentsSection); // Добавляем блок с комментариями
+    // } else {
+    //     const noComments = document.createElement('p');
+    //     noComments.textContent = 'Нет комментариев для этого рецепта.';
+    //     recipesContainer.appendChild(noComments); // Сообщение о том, что комментариев нет
+    // }
+    // Отображаем комментарии в отдельном контейнере
+    if (comments.length > 0) {
+        commentsContainer.innerHTML = '<h4>Комментарии:</h4>'; // Очистим контейнер для комментариев и добавим заголовок
+
+        comments.forEach(comment => {
+            const commentCard = document.createElement('div');
+            commentCard.className = 'comment-card';
+            commentCard.innerHTML = `
+                <p><strong>${comment.username}:</strong> ${comment.text}</p>
+            `;
+            commentsContainer.appendChild(commentCard); // Добавляем каждый комментарий в контейнер
+        });
+    } else {
+        commentsContainer.innerHTML = '<p>Пока никто не написал комментарии к рецепту, будьте первым!</p>'; // Сообщение о том, что комментариев нет
+    }
 }
 
-// Загружаем рецепты при загрузке страницы
-document.addEventListener('DOMContentLoaded', fetchRecipe);
+// Ждем полной загрузки DOM
+document.addEventListener('DOMContentLoaded', () => {
+    fetchRecipe();
+
+    // Находим кнопку по ID
+    const submitButton = document.getElementById('submit-comment');
+
+    // Добавляем обработчик события на клик
+    submitButton.addEventListener('click', async () => {
+        const commentText = document.getElementById('comment-text').value;
+
+        // Проверяем, что поле ввода не пустое
+        if (!commentText) {
+            alert('Пожалуйста, введите комментарий.');
+            return;
+        }
+
+        console.log('Отправка комментария:', commentText);
+
+        // Логика отправки комментария
+        await submitCommentToServer(commentText);
+    });
+});
+
+// Функция для отправки комментария на сервер
+async function submitCommentToServer(commentText) {
+    try {
+        const recipeId = new URLSearchParams(window.location.search).get('recipe_id');
+        if (!recipeId) {
+            console.error('ID рецепта отсутствует.');
+            return;
+        }
+
+        if (!commentText.trim()) {
+            alert('Нельзя отправить пустой комментарий');
+            return;
+        }
+        
+        // Отправляем запрос на сервер
+        const response = await fetch('/recipe/add-comment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ recipe_id: recipeId, comment: commentText }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Ошибка при отправке комментария.');
+        }
+
+        // Очистка поля ввода
+        document.getElementById('comment-text').value = '';
+
+        // Обновление комментариев на странице
+        alert('Комментарий успешно отправлен!');
+        console.log('Комментарий добавлен.');
+
+        // Можно добавить обновление комментариев
+        fetchAndDisplayComments(); // функция для получения и отображения комментариев
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Не удалось отправить комментарий.');
+    }
+}
+
+async function fetchAndDisplayComments() {
+    try {
+        const recipeId = new URLSearchParams(window.location.search).get('recipe_id');
+        if (!recipeId) {
+            console.error('ID рецепта отсутствует.');
+            return;
+        }
+
+        const response = await fetch(`/recipe/comments?recipe_id=${recipeId}`);
+        if (!response.ok) {
+            throw new Error('Ошибка при загрузке комментариев.');
+        }
+
+        const { comments } = await response.json();
+
+        const commentsContainer = document.getElementById('comments');
+        commentsContainer.innerHTML = '<h4>Комментарии:</h4>'; // Очищаем контейнер и добавляем заголовок
+
+        if (comments.length > 0) {
+            comments.forEach(comment => {
+                const commentCard = document.createElement('div');
+                commentCard.className = 'comment-card';
+                commentCard.innerHTML = `
+                    <p><strong>${comment.username}:</strong> ${comment.text}</p>
+                `;
+                commentsContainer.appendChild(commentCard);
+            });
+        } else {
+            commentsContainer.innerHTML += '<p>Пока никто не написал комментарии к рецепту, будьте первым!</p>';
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Не удалось загрузить комментарии.');
+    }
+}
+

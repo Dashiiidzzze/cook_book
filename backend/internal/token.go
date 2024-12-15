@@ -27,32 +27,17 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-// получение userid из токена
-func GetUserIDToken(w http.ResponseWriter, r *http.Request) int {
-	// Читаем куку с токеном
-	cookie, err := r.Cookie("token")
-	if err != nil {
-		http.Redirect(w, r, "/auth", http.StatusSeeOther)
-		return 0
+func NoCacheMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, private")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
+		next(w, r)
 	}
-	claims := &Claims{}
-	token, err := jwt.ParseWithClaims(cookie.Value, claims, func(token *jwt.Token) (interface{}, error) {
-		return secretKey, nil
-	})
-
-	if err != nil || !token.Valid {
-		http.Redirect(w, r, "/auth", http.StatusSeeOther)
-		return 0
-	}
-
-	// Извлекаем userID из токена
-	userID := claims.UserID
-
-	return userID
 }
 
 // Middleware для проверки токена
-func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
+func PrivatAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Читаем куку с токеном
 		cookie, err := r.Cookie("token")
@@ -86,6 +71,34 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		// Выполняем следующий обработчик
 		next(w, r)
 	}
+}
+
+// Проверка токена
+func CheckToken(w http.ResponseWriter, r *http.Request) {
+	tokenString, err := r.Cookie("token") // Получаем токен из куки
+	if err != nil {
+		http.Error(w, "Неавторизован", http.StatusUnauthorized)
+		log.Println("Неавторизован")
+		return
+	}
+
+	token, err := jwt.Parse(tokenString.Value, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			log.Println("Неавторизован [hty gjq]")
+			return nil, fmt.Errorf("неожиданный способ подписи")
+		}
+		return secretKey, nil
+	})
+
+	if err != nil || !token.Valid {
+		http.Error(w, "Неавторизован", http.StatusUnauthorized)
+		log.Println("Неавторизован2")
+		return
+	}
+
+	// Если токен валиден, возвращаем статус успешной авторизации
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"authenticated": true}`))
 }
 
 // Генерация JWT токена

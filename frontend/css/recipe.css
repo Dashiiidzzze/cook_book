@@ -3,12 +3,12 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+    background-color: #fff9c1;
 }
 
 /* Шапка */
 .shapka {
-    background: url('../images/backgraund-fastfood.png') no-repeat center center;
+    background: url('../images/backgraund-fastfood.jpg') no-repeat center center;
     background-size: cover;
     height: 200px;
     display: flex;
@@ -91,21 +91,41 @@ body {
 .recipe-card h3 {
     text-align: center;        /* Центрирует текст по горизонтали */
     font-weight: bold;         /* Делает текст жирным */
-    margin: 10px;
+    margin-top: -5px;
+    margin-bottom: 50px;
     font-size: 40px;
     color: #ff7c00;
 }
 
 .recipe-card p {
     margin: 30px 0;
+    margin-left: 50px;
+    font-size: 20px;
+    color: #555;
+}
+
+.recipe-card ul {
+    /* margin: 30px 0; */
+    margin-top: -20px;
+    margin-left: 50px;
     font-size: 20px;
     color: #555;
 }
 
 .recipe-photo {
-    width: 100%;
-    height: 200px;
+    width: 900px;
+    height: 600px;
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
+    display: block;  /* Делаем элемент блочным */
+    margin: 0 auto;  /* Автоматические отступы по краям для центрирования */
+}
+
+.step-photo {
+    margin-left: 50px;
+    width: 600px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
 }

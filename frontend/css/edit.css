@@ -76,17 +76,6 @@ input, textarea, select {
     font-size: 16px;
 }
 
-/* Стиль для заголовка h2 */
-#recipes-section h2 {
-    text-transform: uppercase; /* Преобразует текст в верхний регистр */
-    text-align: center;        /* Центрирует текст по горизонтали */
-    font-size: 24px;           /* Увеличивает размер текста */
-    font-weight: bold;         /* Делает текст жирным */
-    margin: 20px 0;            /* Отступы сверху и снизу */
-    color: #333;               /* Цвет текста (можно изменить под стиль сайта) */
-}
-  
-
 /* Для поля времени приготовления */
 #cook_time_hours, #cook_time_minutes {
     width: 15%;
