@@ -76,6 +76,17 @@ input, textarea, select {
     font-size: 16px;
 }
 
+/* Стиль для заголовка h2 */
+#recipes-section h2 {
+    text-transform: uppercase; /* Преобразует текст в верхний регистр */
+    text-align: center;        /* Центрирует текст по горизонтали */
+    font-size: 24px;           /* Увеличивает размер текста */
+    font-weight: bold;         /* Делает текст жирным */
+    margin: 20px 0;            /* Отступы сверху и снизу */
+    color: #333;               /* Цвет текста (можно изменить под стиль сайта) */
+}
+  
+
 /* Для поля времени приготовления */
 #cook_time_hours, #cook_time_minutes {
     width: 15%;
@@ -144,6 +155,41 @@ textarea {
 .categories {
     font-size: 16px;         /* Размер шрифта */
 }
+
+
+
+
+
+/* Стили для <option>, которые выбраны */
+#categories option:checked {
+    background-color: #d1e7dd; /* Светло-зелёный фон для выбранных категорий */
+    color: #0a3622; /* Тёмный текст */
+    font-weight: bold; /* Жирный текст */
+}
+
+.category-item {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f8f9fa; /* Светлый фон для обычных категорий */
+    user-select: none;
+}
+
+.category-item.selected {
+    background-color: #d1e7dd; /* Светло-зелёный фон для выбранных категорий */
+    color: #0a3622; /* Тёмный текст */
+    font-weight: bold;
+    border-color: #a3cfbb;
+}
+
+
+
+
+
+
 
 
 

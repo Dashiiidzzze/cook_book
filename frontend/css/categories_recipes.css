@@ -15,7 +15,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 65px; /* Отступ от фотографии до тулбара */
+    margin-bottom: 20px; /* Отступ от фотографии до тулбара */
 }
 
 .toolbar {
@@ -28,7 +28,7 @@ body {
 .nav-link {
     text-decoration: none;
     color: white;                           /* Белый текст */
-    background-color: rgb(0, 0, 0);   /* чертныйй фон */
+    background-color: rgb(37, 30, 43);   /* чертныйй фон */
     padding: 10px 15px;                       /* Внутренние отступы */
     margin: 0 20px;                           /* Отступы между кнопками */
     border-radius: 5px;                       /* Скруглённые углы */
@@ -36,7 +36,7 @@ body {
     transition: background-color 0.3s ease;   /* Плавный переход цвета фона */
 
     position: relative;
-    top: 131px; /* Сдвигаем блок вниз */
+    top: 200px; /* Сдвигаем блок вниз */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,55 +45,71 @@ body {
 .nav-link:hover {   /* Более тёмный оттенок зелёного при наведении */
     background-color: #ff7c00;
     /* background-color: rgba(255, 255, 255, 0.7); */
-    color: black;
+    color: white;
 }
 
-/* Стиль для заголовка h2 */
-#categories-section h2 {
-    text-transform: uppercase; /* Преобразует текст в верхний регистр */
-    text-align: center;        /* Центрирует текст по горизонтали */
-    font-size: 24px;           /* Увеличивает размер текста */
-    font-weight: bold;         /* Делает текст жирным */
-    margin: 10px 0;            /* Отступы сверху и снизу */
-    color: #333;               /* Цвет текста (можно изменить под стиль сайта) */
-}
-
-.categories-container {
+.search-bar {
     display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    padding-top: 10px;
-    padding-bottom: 100px;
-    padding-left: 20px;
-    padding-right: 20px;
+    align-items: center;
+    gap: 10px;
+    top: 250px; /* Сдвигаем блок вниз */
+    margin-top: 100px;
 }
 
-.categories-card {
-    width: 200px;
+.search-bar input {
+    width: 300px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    padding: 50px;
-    transition: transform 0.2s ease;
+    font-size: 16px;
 }
 
-.categories-card:hover {
-    transform: scale(1.05);
+.search-bar button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #ff7c00;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-.categories-card h3 {
-    margin: 30;
+.search-bar button:hover {
+    background-color: #e56e00; /* Темнее оранжевый при наведении */
+}
+
+.search-bar button:active {
+    background-color: #cc5a00; /* Еще темнее при клике */
+    transform: scale(0.98); /* Легкое уменьшение при нажатии */
+} 
+
+.filter-popup {
+    display: none;
+    position: absolute;
+    top: 350px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 10;
+    width: 465px; /* Ширина окна */
+}
+
+.filter-popup label {
+    display: flex; /* Размещаем чекбокс и текст в одну строку */
+    align-items: center; /* Выравниваем элементы по вертикали */
+    margin: 5px 0; /* Отступы между пунктами */
     font-size: 16px;
     color: #333;
+    cursor: pointer;
 }
 
-.categories-card p {
-    margin: 30px 0;
-    font-size: 14px;
-    color: #555;
+.filter-popup input[type="checkbox"] {
+    margin-right: 10px; /* Отступ справа от чекбокса */
+    cursor: pointer;
+    width: 30px;
+    color: #ff7c00;
 }
 
 

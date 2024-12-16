@@ -19,9 +19,11 @@ func ListeningHTTP(APIport int) {
 	http.HandleFunc("/recipe", PageRecipe)          // страница просмотра рецепта
 	http.HandleFunc("/recipe/view", PageRecipeView) // запрос рецепта
 	http.HandleFunc("/recipe/add-comment", internal.PrivatAuthMiddleware(PageRecipeComment))
-	http.HandleFunc("/categories", PageCategories)                //страница категорий
-	http.HandleFunc("/categories/recipes", PageCategoriesRecipes) // рецепты в категории
-	http.HandleFunc("/categories/all", PageCategoriesAll)         // все категории
+	http.HandleFunc("/categories", PageCategories)                               //страница категорий
+	http.HandleFunc("/categories/all", PageCategoriesAll)                        // все категории
+	http.HandleFunc("/categories-recipes", PageCategoriesRecipes)                // рецепты в категории
+	http.HandleFunc("/categories-recipes/recipes", PageCategoriesRecipesView)    // рецепты в категории
+	http.HandleFunc("/categories-recipes/filters", PageCategoriesRecipesFilters) // рецепты в категории
 
 	// далее запросы требуют аутентификации
 	http.HandleFunc("/myrecipes", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(PageMyRecipes)))                // страница с моими рецептами

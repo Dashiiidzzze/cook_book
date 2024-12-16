@@ -35,6 +35,9 @@ function displayRecipe(data) {
     
     const { recipe, comments } = data; // Извлекаем рецепт и комментарии из данных
 
+    recipesContainer.innerHTML = '';
+    commentsContainer.innerHTML = '';
+
     // Создаем карточку рецепта
     const recipeCard = document.createElement('div');
     recipeCard.className = 'recipe-card';
@@ -83,28 +86,6 @@ function displayRecipe(data) {
 
     recipesContainer.appendChild(recipeCard); // Добавляем карточку рецепта в контейнер
 
-
-    // // Отображаем комментарии, если они есть
-    // if (comments.length > 0) {
-    //     const commentsSection = document.createElement('div');
-    //     commentsSection.className = 'comments-section';
-    //     commentsSection.innerHTML = '<h4>Комментарии:</h4>';
-        
-    //     comments.forEach(comment => {
-    //         const commentCard = document.createElement('div');
-    //         commentCard.className = 'comment-card';
-    //         commentCard.innerHTML = `
-    //             <p><strong>${comment.username}:</strong> ${comment.text}</p>
-    //         `;
-    //         commentsSection.appendChild(commentCard);
-    //     });
-
-    //     recipesContainer.appendChild(commentsSection); // Добавляем блок с комментариями
-    // } else {
-    //     const noComments = document.createElement('p');
-    //     noComments.textContent = 'Нет комментариев для этого рецепта.';
-    //     recipesContainer.appendChild(noComments); // Сообщение о том, что комментариев нет
-    // }
     // Отображаем комментарии в отдельном контейнере
     if (comments.length > 0) {
         commentsContainer.innerHTML = '<h4>Комментарии:</h4>'; // Очистим контейнер для комментариев и добавим заголовок
@@ -135,7 +116,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Проверяем, что поле ввода не пустое
         if (!commentText) {
-            alert('Пожалуйста, введите комментарий.');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Внимание!',
+                text: 'Нельзя добавить пустой комментарий.',
+                confirmButtonColor: '#ff7c00',
+            });
+            //alert('Пожалуйста, введите комментарий.');
             return;
         }
 
@@ -156,7 +143,13 @@ async function submitCommentToServer(commentText) {
         }
 
         if (!commentText.trim()) {
-            alert('Нельзя отправить пустой комментарий');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Внимание!',
+                text: 'Нельзя добавить пустой комментарий.',
+                confirmButtonColor: '#ff7c00',
+            });
+            //alert('Нельзя отправить пустой комментарий');
             return;
         }
         
@@ -169,6 +162,11 @@ async function submitCommentToServer(commentText) {
             body: JSON.stringify({ recipe_id: recipeId, comment: commentText }),
         });
 
+        if (response.redirected) {
+            window.location.href = response.url; // Выполнить редирект
+            return;
+        }
+
         if (!response.ok) {
             throw new Error('Ошибка при отправке комментария.');
         }
@@ -177,50 +175,58 @@ async function submitCommentToServer(commentText) {
         document.getElementById('comment-text').value = '';
 
         // Обновление комментариев на странице
-        alert('Комментарий успешно отправлен!');
+        Swal.fire({
+            icon: 'success',
+            title: 'Успех!',
+            text: 'Комментарий добавлен.',
+            timer: 2000, // Окно исчезнет через 2 секунды
+            showConfirmButton: false,
+        });
+        //alert('Комментарий успешно отправлен!');
         console.log('Комментарий добавлен.');
 
         // Можно добавить обновление комментариев
-        fetchAndDisplayComments(); // функция для получения и отображения комментариев
+        //fetchAndDisplayComments(); // функция для получения и отображения комментариев
+        fetchRecipe() // перезагрузка страницы
     } catch (error) {
         console.error('Ошибка:', error);
         alert('Не удалось отправить комментарий.');
     }
 }
 
-async function fetchAndDisplayComments() {
-    try {
-        const recipeId = new URLSearchParams(window.location.search).get('recipe_id');
-        if (!recipeId) {
-            console.error('ID рецепта отсутствует.');
-            return;
-        }
+// async function fetchAndDisplayComments() {
+//     try {
+//         const recipeId = new URLSearchParams(window.location.search).get('recipe_id');
+//         if (!recipeId) {
+//             console.error('ID рецепта отсутствует.');
+//             return;
+//         }
 
-        const response = await fetch(`/recipe/comments?recipe_id=${recipeId}`);
-        if (!response.ok) {
-            throw new Error('Ошибка при загрузке комментариев.');
-        }
+//         const response = await fetch(`/recipe/comments?recipe_id=${recipeId}`);
+//         if (!response.ok) {
+//             throw new Error('Ошибка при загрузке комментариев.');
+//         }
 
-        const { comments } = await response.json();
+//         const { comments } = await response.json();
 
-        const commentsContainer = document.getElementById('comments');
-        commentsContainer.innerHTML = '<h4>Комментарии:</h4>'; // Очищаем контейнер и добавляем заголовок
+//         const commentsContainer = document.getElementById('comments');
+//         commentsContainer.innerHTML = '<h4>Комментарии:</h4>'; // Очищаем контейнер и добавляем заголовок
 
-        if (comments.length > 0) {
-            comments.forEach(comment => {
-                const commentCard = document.createElement('div');
-                commentCard.className = 'comment-card';
-                commentCard.innerHTML = `
-                    <p><strong>${comment.username}:</strong> ${comment.text}</p>
-                `;
-                commentsContainer.appendChild(commentCard);
-            });
-        } else {
-            commentsContainer.innerHTML += '<p>Пока никто не написал комментарии к рецепту, будьте первым!</p>';
-        }
-    } catch (error) {
-        console.error('Ошибка:', error);
-        alert('Не удалось загрузить комментарии.');
-    }
-}
+//         if (comments.length > 0) {
+//             comments.forEach(comment => {
+//                 const commentCard = document.createElement('div');
+//                 commentCard.className = 'comment-card';
+//                 commentCard.innerHTML = `
+//                     <p><strong>${comment.username}:</strong> ${comment.text}</p>
+//                 `;
+//                 commentsContainer.appendChild(commentCard);
+//             });
+//         } else {
+//             commentsContainer.innerHTML += '<p>Пока никто не написал комментарии к рецепту, будьте первым!</p>';
+//         }
+//     } catch (error) {
+//         console.error('Ошибка:', error);
+//         alert('Не удалось загрузить комментарии.');
+//     }
+// }
 

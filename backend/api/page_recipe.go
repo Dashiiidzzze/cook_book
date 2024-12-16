@@ -58,6 +58,14 @@ func PageRecipeView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !recipe.Public {
+		userID := internal.GetUserIDToken(w, r)
+		if recipe.UserID != userID {
+			http.Error(w, "id рецепта не указано", http.StatusBadRequest)
+			return
+		}
+	}
+
 	// Формируем ответ
 	response := RecipeResponse{
 		Recipe:   recipe,
@@ -72,17 +80,17 @@ func PageRecipeView(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// доделать
+// добавление комментария к рецепту
 func PageRecipeComment(w http.ResponseWriter, r *http.Request) {
 	log.Println("Добавление комментария:", r.URL.Path)
-	if r.URL.Path != "/recipe/add_comment" || r.Method != http.MethodGet {
+	if r.URL.Path != "/recipe/add-comment" || r.Method != http.MethodPost {
 		http.NotFound(w, r)
 		return
 	}
 
 	// Чтение тела запроса
 	var commentData struct {
-		RecipeID int    `json:"recipe_id"`
+		RecipeID string `json:"recipe_id"`
 		Comment  string `json:"comment"`
 	}
 
@@ -94,7 +102,13 @@ func PageRecipeComment(w http.ResponseWriter, r *http.Request) {
 
 	username := internal.GetStringUsernameToken(w, r)
 
-	err = repo.AddComment(commentData.RecipeID, username, commentData.Comment)
+	id, err := strconv.Atoi(commentData.RecipeID)
+	if err != nil {
+		http.Error(w, "Категория не целое число", http.StatusBadRequest)
+		return
+	}
+
+	err = repo.AddComment(id, username, commentData.Comment)
 	if err != nil {
 		http.Error(w, "Ошибка базы данных", http.StatusBadRequest)
 		return
@@ -103,21 +117,4 @@ func PageRecipeComment(w http.ResponseWriter, r *http.Request) {
 	// Ответ после успешного добавления комментария
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-
-	// // Отправляем обновленные данные рецепта с комментариями
-	// recipe, comments, err := repo.GetRecipeView(commentData.RecipeID)
-	// if err != nil {
-	// 	http.Error(w, "Ошибка базы данных", http.StatusInternalServerError)
-	// 	return
-	// }
-
-	// response := struct {
-	// 	Recipe   repo.GetRecipe `json:"recipe"`
-	// 	Comments []repo.Comment `json:"comments"`
-	// }{
-	// 	Recipe:   recipe,
-	// 	Comments: comments,
-	// }
-
-	// json.NewEncoder(w).Encode(response)
 }

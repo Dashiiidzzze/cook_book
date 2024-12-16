@@ -25,7 +25,7 @@
     <!-- Секция полей для заполнения -->
     <main class="main-content">
         <section id="recipes-section">
-            <h2>Создание рецепта</h2>
+            <h2>Редактирование рецепта</h2>
             <form id="recipeForm">
                 <div class="form-group">
                     <label for="name">Название рецепта:</label>
@@ -43,8 +43,7 @@
                     <label for="ingredients">Ингредиенты:</label>
                     <div id="ingredients">
                         <div class="ingredients-container">
-                            <input type="text" class="ingredient" placeholder="Ингредиент" required>
-                            <input type="text" class="quantity" placeholder="Количество" required>
+                            
                         </div>
                     </div>
                     <button type="button" id="addIngredient">Добавить ингредиент</button>
@@ -59,9 +58,9 @@
                     <label for="steps">Этапы приготовления блюда:(опишите этап и прикрепите фото)</label>
                     <div id="steps">
                         <div class="steps-container">
-                            <textarea type="text" class="step" placeholder="Этап приготовления" required></textarea>
+                            <!-- <textarea type="text" class="step" placeholder="Этап приготовления" required></textarea> -->
                             <!-- <label for="photo">Фото:</label> -->
-                            <input type="file" class="step-photo" id="step-photo" name="photo" accept="image/*">
+                            <!-- <input type="file" class="step-photo" id="step-photo" name="photo" accept="image/*"> -->
                         </div>
                     </div>
                     <button type="button" id="addStep">Добавить этап</button>
@@ -74,9 +73,12 @@
 
                 <div class="form-group">
                     <label for="categories">Категории:(для выбора зажмите contrl)</label>
-                    <select class="categories"id="categories" name="categories[]" multiple required>
+                    <select class="categories"id="categories" name="categories[]" multiple>
                         <!-- Категории будут загружаться через JS -->
                     </select>
+                    <!-- <div id="category-container"> -->
+                        <!-- Здесь будут категории -->
+                    <!-- </div> -->
                 </div>
 
                 <div class="form-group checkbox-group">
@@ -86,7 +88,7 @@
 
                 <button type="submit">Сохранить рецепт</button>
             </form>
-        </section>
+        </section> 
     </main>
 
     <script src="js/edit.js"></script>

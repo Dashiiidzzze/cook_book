@@ -4,32 +4,30 @@ import (
 	"context"
 	"log"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// Глобальная переменная для подключения к базе данных
-var db *pgx.Conn
+// Глобальный пул соединений
+var dbPool *pgxpool.Pool
 
-// инициализация подключения
 func InitDB(connString string) {
 	var err error
-	db, err = pgx.Connect(context.Background(), connString)
+	dbPool, err = pgxpool.New(context.Background(), connString)
 	if err != nil {
-		log.Fatalf("Не удается подключиться к базе данных: %v\n", err)
+		log.Fatalf("Не удается создать пул соединений: %v\n", err)
 	}
-	log.Println("Подключение к базе данных прошло успешно")
+	log.Println("Пул соединений к базе данных успешно создан")
 }
 
-// закрывает соединение с базой данных
+// Закрытие пула
 func CloseDB() {
-	if db != nil {
-		if err := db.Close(context.Background()); err != nil {
-			log.Printf("Ошибка при закрытии базы данных: %v\n", err)
-		}
+	if dbPool != nil {
+		dbPool.Close()
+		log.Println("Пул соединений закрыт")
 	}
 }
 
-// возвращает объект подключения для использования
-func GetDB() *pgx.Conn {
-	return db
+// Получение пула соединений
+func GetDB() *pgxpool.Pool {
+	return dbPool
 }
