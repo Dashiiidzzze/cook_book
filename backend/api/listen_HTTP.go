@@ -31,7 +31,8 @@ func ListeningHTTP(APIport int) {
 	http.HandleFunc("/myrecipes/recipes/", internal.PrivatAuthMiddleware(PageMyRecipesDeleteRecipe))                       // мои рецепты
 	http.HandleFunc("/myrecipes/filter", internal.PrivatAuthMiddleware(PageMyRecipesFilters))
 
-	http.HandleFunc("/edit", internal.PrivatAuthMiddleware(PageEdit))                                 // мои рецепты
+	http.HandleFunc("/edit", internal.PrivatAuthMiddleware(PageEdit)) // мои рецепты
+	http.HandleFunc("/edit/save", internal.PrivatAuthMiddleware(PageEditSave))
 	http.HandleFunc("/create", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(PageCreate))) // создание рецепта
 	http.HandleFunc("/create/save", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(SaveCreate)))
 	http.HandleFunc("/profile", internal.NoCacheMiddleware(internal.PrivatAuthMiddleware(PageProfile))) // профиль пользователя (POST, GET, DELETE)

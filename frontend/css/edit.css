@@ -28,7 +28,7 @@ body {
 .nav-link {
     text-decoration: none;
     color: white;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(37, 30, 43);
     padding: 10px 15px;
     margin: 0 20px;
     border-radius: 5px;
@@ -43,7 +43,7 @@ body {
 
 .nav-link:hover {
     background-color: #ff7c00;
-    color: black;
+    color: white;
 }
 
 /* Стили для формы */

@@ -28,7 +28,7 @@ body {
 .nav-link {
     text-decoration: none;
     color: white;                           /* Белый текст */
-    background-color: rgba(0, 0, 0, 0.7);   /* чертныйй фон */
+    background-color: rgba(37, 30, 43);   /* чертныйй фон */
     padding: 10px 15px;                       /* Внутренние отступы */
     margin: 0 20px;                           /* Отступы между кнопками */
     border-radius: 5px;                       /* Скруглённые углы */

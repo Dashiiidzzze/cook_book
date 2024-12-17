@@ -28,7 +28,7 @@ body {
 .nav-link {
     text-decoration: none;
     color: white;                           /* Белый текст */
-    background-color: rgb(0, 0, 0);   /* чертныйй фон */
+    background-color: rgb(37, 30, 43);   /* чертныйй фон */
     padding: 10px 15px;                       /* Внутренние отступы */
     margin: 0 20px;                           /* Отступы между кнопками */
     border-radius: 5px;                       /* Скруглённые углы */
@@ -45,7 +45,7 @@ body {
 .nav-link:hover {   /* Более тёмный оттенок зелёного при наведении */
     background-color: #ff7c00;
     /* background-color: rgba(255, 255, 255, 0.7); */
-    color: black;
+    color: white;
 }
 
 /* Стиль для заголовка h2 */
@@ -73,7 +73,7 @@ body {
     width: 200px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: white;
+    background-color: rgb(194, 255, 143);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: left;
     padding: 50px;
@@ -86,7 +86,7 @@ body {
 
 .categories-card h3 {
     margin: 30;
-    font-size: 16px;
+    font-size: 22px;
     color: #333;
 }
 
@@ -114,12 +114,6 @@ body {
     gap: 20px;
     justify-content: center;
     padding: 20px;
-
-    /* position: relative;
-    top: 10px; 
-    display: flex;
-    justify-content: center;
-    align-items: center; */
 }
 
 /* Стиль для контейнера рецепта */

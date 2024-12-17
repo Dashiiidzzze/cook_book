@@ -112,7 +112,7 @@ function displayRecipes(recipes) {
                 if (isConfirmed) {
                     deleteRecipe(recipeId); // Удаляем рецепт, если подтверждено
                 }
-            });
+            }); 
         });
 
         // Добавляем обработчик клика на кнопку "Редактировать рецепт"
@@ -159,8 +159,14 @@ async function deleteRecipe(recipeId) {
             method: 'DELETE' 
         });
         if (!response.ok) throw new Error('Не удалось удалить рецепт');
-
-        alert('Рецепт успешно удален.');
+        Swal.fire({
+            icon: 'success',
+            title: 'Успех!',
+            text: 'Рецепт удален.',
+            timer: 2000, // Окно исчезнет через 2 секунды
+            showConfirmButton: false,
+        });
+        //alert('Рецепт успешно удален.');
         fetchLatestRecipes(); // Перезагрузка списка рецептов
     } catch (error) {
         console.error('Ошибка:', error);

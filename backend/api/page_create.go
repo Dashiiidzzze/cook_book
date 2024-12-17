@@ -4,7 +4,6 @@ import (
 	"cookbook/internal"
 	"cookbook/repo"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -57,7 +56,6 @@ func SaveCreate(w http.ResponseWriter, r *http.Request) {
 		log.Println("ошибка декодирования json")
 		return
 	}
-	fmt.Println(recipe)
 
 	userID := internal.GetUserIDToken(w, r)
 
