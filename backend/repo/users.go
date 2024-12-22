@@ -18,9 +18,6 @@ func SaveUser(name string, passwd string) error {
 		VALUES ($1, $2)
 		RETURNING id
 	`
-	// hasher := sha256.New()
-	// hasher.Write([]byte(passwd + salt))
-	// passwordHash := hex.EncodeToString(hasher.Sum(nil)) // Конвертация в строку
 
 	// Генерация хеша пароля с "cost" (сложность) 14
 	hasher, err := bcrypt.GenerateFromPassword([]byte(passwd), bcrypt.DefaultCost)
@@ -44,6 +41,7 @@ func SaveUser(name string, passwd string) error {
 	return nil
 }
 
+// получение информации о пользователе по имени
 func GetUser(name string) (int, string, error) {
 	query := "SELECT id, password_hash FROM users WHERE username = $1"
 

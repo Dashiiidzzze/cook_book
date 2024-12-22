@@ -16,42 +16,6 @@ function displayUsername(data) {
     usernameElement.textContent = data.username || 'Неизвестный пользователь';
 }
 
-// // смена пароля
-// async function changePassword() {
-//     const oldPassword = document.getElementById('oldpass').value;
-//     const newPassword = document.getElementById('newpass').value;
-
-//     if (!oldPassword || !newPassword) {
-//         return;
-//     }
-
-//     console.log("Отправка запроса на сервер..."); // Лог перед отправкой запроса
-//     console.log({ old_password: oldPassword, new_password: newPassword });
-
-//     try {
-//         const response = await fetch('/profile/changepass', {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify({
-//                 old_password: oldPassword,
-//                 new_password: newPassword
-//             })
-//         });
-
-//         if (response.ok) {
-//             alert('Пароль успешно изменён!');
-//             document.getElementById('oldpass').value = '';
-//             document.getElementById('newpass').value = '';
-//         } else {
-//             const errorData = await response.text();
-//             alert(`Ошибка: ${errorData}`);
-//         }
-//     } catch (error) {
-//         console.error('Ошибка:', error);
-//         alert('Произошла ошибка при смене пароля.');
-//     }
-// }
-
 // Вызываем функцию при загрузке страницы
 document.addEventListener('DOMContentLoaded', fetchUserName);
 // Добавляем обработчик кнопки
@@ -92,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     timer: 2000, // Окно исчезнет через 2 секунды
                     showConfirmButton: false,
                 });
-                //alert("Пароль успешно изменён!");
                 document.getElementById("oldpass").value = "";
                 document.getElementById("newpass").value = "";
             } else {
@@ -104,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     timer: 2000, // Окно исчезнет через 2 секунды
                     showConfirmButton: false,
                 });
-                //alert(`Ошибка: ${errorText}`);
             }
         } catch (error) {
             console.error("Ошибка запроса:", error);
@@ -140,8 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => {
                     window.location.href = '/auth';
                 }, 2000);
-                //alert('Вы успешно вышли из профиля!');
-                //window.location.href = '/auth';  // Перенаправляем на страницу входа
             } else {
                 alert('Ошибка при выходе из профиля');
             }

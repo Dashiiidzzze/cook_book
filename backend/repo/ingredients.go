@@ -13,6 +13,7 @@ type IngredientFilter struct {
 	Name string `json:"name"`
 }
 
+// получение ингредиентов из бд
 func GetIngredients(userID *int, categoryID *int) ([]IngredientFilter, error) {
 	query := `
 		SELECT DISTINCT i.id, i.name

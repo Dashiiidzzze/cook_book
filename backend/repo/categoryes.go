@@ -5,16 +5,15 @@ import (
 	"log"
 )
 
-// Структура для представления категории
+// представления категории
 type DishType struct {
 	ID    int    `json:"id"`
 	Name  string `json:"name"`
 	Photo string `json:"photo,omitempty"` // Base64 фото
 }
 
-// Функция для получения всех категорий из базы данных
+// получение всех категорий из базы данных
 func GetCategory() ([]DishType, error) {
-	// SQL-запрос для получения всех категорий
 	query := "SELECT id, name, COALESCE(ENCODE(photo, 'base64'), '') AS photo FROM dish_types ORDER BY name"
 
 	// Выполняем запрос

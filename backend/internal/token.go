@@ -12,13 +12,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var secretKey = []byte("your-secret-key") // Секретный ключ для подписи токена
-
-// Структура для хранения данных пользователя
-// type Credentials struct {
-// 	Username string `json:"username"`
-// 	Password string `json:"password"`
-// }
+var secretKey = []byte("6uR*280eQ9Uivlkf№delITjiSK*G)HZFWkp#O%YJ6q№98D&tG&*5p*Y9u*AyM$lP8№GWIukBY1JP") // Секретный ключ для подписи токена
 
 // Структура данных в токене
 type Claims struct {
@@ -27,6 +21,7 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+// отключение кешировани для страниц
 func NoCacheMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, private")
@@ -182,33 +177,3 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "Login successful!")
 }
-
-// // Middleware для проверки токена
-// func Authenticate(next http.HandlerFunc) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		// Получаем токен из cookies
-// 		cookie, err := r.Cookie("token")
-// 		if err != nil {
-// 			http.Error(w, "Unauthorized: No token", http.StatusUnauthorized)
-// 			return
-// 		}
-
-// 		// Проверяем и парсим токен
-// 		token, err := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-// 			return secretKey, nil
-// 		})
-
-// 		if err != nil || !token.Valid {
-// 			http.Error(w, "Unauthorized: Invalid token", http.StatusUnauthorized)
-// 			return
-// 		}
-
-// 		// Если токен валиден, продолжаем выполнение
-// 		next(w, r)
-// 	}
-// }
-
-// Защищенный маршрут
-// func ProtectedHandler(w http.ResponseWriter, r *http.Request) {
-// 	fmt.Fprintln(w, "Welcome to the protected area!")
-// }

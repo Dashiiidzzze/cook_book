@@ -44,7 +44,6 @@ body {
 
 .nav-link:hover {   /* Более тёмный оттенок при наведении */
     background-color: #ff7c00;
-    /* background-color: rgba(255, 255, 255, 0.7); */
     color: white;
 }
 
@@ -65,12 +64,6 @@ body {
     gap: 20px;
     justify-content: center;
     padding: 20px;
-
-    /* position: relative;
-    top: 10px; 
-    display: flex;
-    justify-content: center;
-    align-items: center; */
 }
 
 .recipe-card {

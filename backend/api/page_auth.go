@@ -10,5 +10,5 @@ func PageLogin(w http.ResponseWriter, r *http.Request) {
 
 	// Указываем, что возвращаем HTML
 	w.Header().Set("Content-Type", "text/html")
-	http.ServeFile(w, r, "../frontend/auth.html") // Путь к вашему HTML-файлу
+	http.ServeFile(w, r, "../frontend/auth.html")
 }

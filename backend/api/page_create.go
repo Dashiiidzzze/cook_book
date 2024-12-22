@@ -8,29 +8,7 @@ import (
 	"net/http"
 )
 
-// Структура для рецепта
-// type SaveRecipe struct {
-// 	Name         string       `json:"name"`
-// 	CookTime     string       `json:"cook_time"`
-// 	Ingredients  []Ingredient `json:"ingredients"`
-// 	Instructions string       `json:"instructions"`
-// 	Steps        []RecipeStep `json:"steps"`
-// 	Categories   []int        `json:"categories"`
-// 	Photo        string       `json:"photo,omitempty"` // Base64 фото
-// 	Public       bool         `json:"public"`
-// }
-
-// type Ingredient struct {
-// 	Name     string `json:"name"`
-// 	Quantity string `json:"quantity"`
-// }
-
-// // Структура для этапов приготовления
-// type RecipeStep struct {
-// 	Step  string `json:"step"`
-// 	Photo string `json:"photo,omitempty"` // Base64 фото
-// }
-
+// рендеринг страницы создания
 func PageCreate(w http.ResponseWriter, r *http.Request) {
 	log.Println("отрисовка страницы создания рецепта:", r.URL.Path)
 	if r.URL.Path != "/create" {
@@ -43,6 +21,7 @@ func PageCreate(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "../frontend/create.html") // Путь к вашему HTML-файлу
 }
 
+// сохранение рецепта
 func SaveCreate(w http.ResponseWriter, r *http.Request) {
 	log.Println("Сохранение рецепта:", r.URL.Path)
 	if r.URL.Path != "/create/save" {

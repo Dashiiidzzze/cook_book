@@ -27,10 +27,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         // Добавляем контейнер в основной контейнер ingredients
         document.getElementById('ingredients').appendChild(ingredientsContainer);
-
-        // Перемещаем кнопку "Добавить ингредиент" под последним полем
-        // const button = document.getElementById('addIngredient');
-        // document.getElementById('ingredients').appendChild(button);
     });
 
     // Функция добавления этапа
@@ -152,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 timer: 2000, // Окно исчезнет через 2 секунды
                 showConfirmButton: false,
             });
-
+ 
             // Перенаправление после задержки
             setTimeout(() => {
                 window.location.href = '/myrecipes';

@@ -152,7 +152,6 @@ async function addToFavorites(recipeId) {
             timer: 2000, // Окно исчезнет через 2 секунды
             showConfirmButton: false,
         });
-        //alert('Рецепт добавлен в мои рецепты!'); // Показать сообщение об успехе
     } catch (error) {
         console.error('Ошибка:', error);
         // Показать красивое окно об ошибке
@@ -162,7 +161,6 @@ async function addToFavorites(recipeId) {
             text: 'Не удалось добавить рецепт в ваши рецепты. Попробуйте снова.',
             confirmButtonColor: '#ff7c00',
         });
-        //alert('Не удалось добавить рецепт в мои рецепты.');
     }
 }
 

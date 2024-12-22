@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Обработчик формы на отправку
     recipeForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        const formData = collectFormData();
+        const formData = await collectFormData();
         await saveRecipeData(recipeId, formData);
     });
 });
@@ -66,34 +66,19 @@ function fillFormWithData(data) {
     // Устанавливаем категории
     loadCategories(recipe.categories);
 
+    // // Устанавливаем главное фото
+    // if (recipe.photo) {
+    //     setMainPhoto(recipe.photo);
+    // }
     // Устанавливаем главное фото
     if (recipe.photo) {
         setMainPhoto(recipe.photo);
+        const photoInput = document.getElementById('photo');
+        photoInput.dataset.existingPhoto = recipe.photo; // Устанавливаем существующее фото
     }
 
     document.getElementById('public').checked = recipe.public;
 }
-
-// // Добавление категорий: загрузка всех и выделение нужных
-// async function loadCategories(selectedCategories) {
-//     try {
-//         const response = await fetch('/categories/all'); // Запрос всех категорий
-//         const categories = await response.json();
-
-//         const select = document.getElementById('categories');
-//         categories.forEach(category => {
-//             const option = document.createElement('option');
-//             option.value = category.id;
-//             option.textContent = category.name;
-//             if (selectedCategories.includes(category.id)) {
-//                 option.selected = true;
-//             }
-//             select.appendChild(option);
-//         });
-//     } catch (error) {
-//         console.error('Ошибка загрузки категорий:', error);
-//     }
-// }
 
 async function loadCategories(selectedCategories) {
     try {
@@ -121,38 +106,6 @@ async function loadCategories(selectedCategories) {
         console.error('Ошибка загрузки категорий:', error);
     }
 }
-
-// async function loadCategories(selectedCategories) {
-//     try {
-//         const response = await fetch('/categories/all'); // Запрос всех категорий
-//         const categories = await response.json();
-
-//         const container = document.getElementById('category-container');
-//         container.innerHTML = ''; // Очищаем контейнер
-
-//         categories.forEach(category => {
-//             const div = document.createElement('div');
-//             div.classList.add('category-item');
-//             div.textContent = category.name;
-//             div.dataset.id = category.id;
-
-//             // Приведение типов для корректного сравнения
-//             if (selectedCategories.map(Number).includes(Number(category.id))) {
-//                 div.classList.add('selected');
-//             }
-
-//             // Добавляем обработчик клика для переключения состояния
-//             div.addEventListener('click', () => {
-//                 div.classList.toggle('selected');
-//             });
-
-//             container.appendChild(div);
-//         });
-//     } catch (error) {
-//         console.error('Ошибка загрузки категорий:', error);
-//     }
-// }
-
 
 // Добавление полей для ингредиентов
 function addIngredientField(name = '', quantity = '') {
@@ -191,52 +144,78 @@ function setMainPhoto(photo) {
 
 // Сбор данных формы
 async function collectFormData() {
-    const formData = {
-        name: document.getElementById('name').value,
-        cook_time: {
-            hours: document.getElementById('cook_time_hours').value,
-            minutes: document.getElementById('cook_time_minutes').value
-        },
-        instructions: document.getElementById('instructions').value,
-        ingredients: [],
-        steps: [],
-        categories: Array.from(document.getElementById('categories').selectedOptions).map(opt => opt.value),
-        public: document.getElementById('public').checked,
-        photo: null
-    };
+    const formElement = document.getElementById('recipeForm');
+    const formData = new FormData(formElement);
+    const recipeData = {};
 
-    // Главное фото
-    const photoInput = document.getElementById('photo');
-    if (photoInput.files.length > 0) {
-        formData.photo = await fileToBase64(photoInput.files[0]);
-    } else if (photoInput.dataset.existingPhoto) {
-        formData.photo = photoInput.dataset.existingPhoto;
-    }
+    // Сбор основных данных
+    recipeData.name = formData.get('name');
+
+    // Время приготовления
+    const hours = parseInt(formData.get('cook_time_hours'), 10) || 0;
+    const minutes = parseInt(formData.get('cook_time_minutes'), 10) || 0;
+    recipeData.cook_time = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
 
     // Ингредиенты
+    recipeData.ingredients = [];
     document.querySelectorAll('.ingredients-container').forEach(container => {
-        const name = container.querySelector('.ingredient').value;
-        const quantity = container.querySelector('.quantity').value;
-        formData.ingredients.push({ name, quantity });
+        const ingredient = container.querySelector('.ingredient').value.trim();
+        const quantity = container.querySelector('.quantity').value.trim();
+        if (ingredient && quantity) {
+            recipeData.ingredients.push({ name: ingredient, quantity });
+        }
     });
 
-    // Этапы
-    for (const container of document.querySelectorAll('.steps-container')) {
-        const stepText = container.querySelector('.step').value;
+    // Инструкции
+    recipeData.instructions = formData.get('instructions');
+
+    // Этапы приготовления
+    recipeData.steps = [];
+    const stepContainers = document.querySelectorAll('.steps-container');
+    for (const container of stepContainers) {
+        const stepText = container.querySelector('.step').value.trim();
         const photoInput = container.querySelector('.step-photo');
         const photoPreview = container.querySelector('.step-photo-preview');
-
-        const stepData = { step: stepText };
-        if (photoInput.files.length > 0) {
+        const stepData = { step: stepText }; // Исправлено на ключ "step"
+        //????????????????????/
+        if (photoInput && photoInput.files.length > 0) {
             stepData.photo = await fileToBase64(photoInput.files[0]);
-        } else if (photoPreview) {
+        } else if (photoPreview && photoPreview.src) {
+            console.log('Передаем старое фото этапа:', photoPreview.src);
             stepData.photo = photoPreview.src.split(',')[1]; // Удаляем prefix base64
         }
 
-        formData.steps.push(stepData);
+        // if (photoPreview && photoPreview.src) {
+        //     console.log('Старое фото этапа:', photoPreview.src); // Проверяем, что содержится в photoPreview.src
+        //     stepData.photo = photoPreview.src.split(',')[1]; // Убираем префикс base64
+        // } else {
+        //     console.log('Нет фото этапа');
+        // }
+
+        // // Обработка фото этапа
+        // if (stepPhoto) {
+        //     stepData.photo = await fileToBase64(stepPhoto);
+        // }
+
+        recipeData.steps.push(stepData);
     }
 
-    return formData;
+    // Главное фото
+    const photoInput = document.getElementById('photo');
+    if (photoInput && photoInput.files.length > 0) {
+        recipeData.photo = await fileToBase64(photoInput.files[0]);
+    } else if (photoInput.dataset.existingPhoto) {
+        recipeData.photo = photoInput.dataset.existingPhoto;
+    }
+
+    // Категории
+    recipeData.categories = Array.from(document.getElementById('categories').selectedOptions)
+        .map(option => parseInt(option.value, 10)); // Преобразование к числу
+
+    // Обработка галочки "выложить в общий доступ"
+    recipeData.public = document.getElementById('public').checked;
+    console.log('Собранные данные:', recipeData);
+    return recipeData;
 }
 
 // Конвертация файла в Base64
@@ -251,42 +230,42 @@ function fileToBase64(file) {
 
 // Сохранение рецепта
 async function saveRecipeData(recipeId, data) {
-    const formData = new FormData();
-
-    formData.append('name', data.name);
-    formData.append('cook_time_hours', data.cook_time.hours);
-    formData.append('cook_time_minutes', data.cook_time.minutes);
-    formData.append('instructions', data.instructions);
-
-    if (data.photo) {
-        formData.append('photo', data.photo);
-    }
-
-    data.ingredients.forEach((ingredient, index) => {
-        formData.append(`ingredients[${index}][name]`, ingredient.name);
-        formData.append(`ingredients[${index}][quantity]`, ingredient.quantity);
-    });
-
-    data.steps.forEach((step, index) => {
-        formData.append(`steps[${index}][step]`, step.step);
-        formData.append(`steps[${index}][photo]`, step.photo);
-    });
-
-    data.categories.forEach((category, index) => {
-        formData.append(`categories[${index}]`, category);
-    });
-
-    formData.append('public', data.public);
-
+    console.log("Collected Data:", data);
     try {
         const response = await fetch(`/edit/save?recipe_id=${recipeId}`, {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
         });
-        if (!response.ok) throw new Error('Ошибка сохранения данных');
-        alert('Рецепт успешно сохранен!');
+
+        if (!response.ok) {
+            throw new Error('Ошибка при сохранении рецепта');
+        }
+
+        //alert('Рецепт успешно сохранен!');
+        Swal.fire({
+            icon: 'success',
+            title: 'Успех!',
+            text: 'Рецепт успешно сохранен!',
+            timer: 2000, // Окно исчезнет через 2 секунды
+            showConfirmButton: false,
+        });
+
+        // Перенаправление после задержки
+        setTimeout(() => {
+            window.location.href = '/myrecipes';
+        }, 2000);
     } catch (error) {
         console.error('Ошибка:', error);
-        alert('Не удалось сохранить данные рецепта.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Ошибка!',
+            text: 'Не удалось сохранить рецепт.',
+            timer: 2000, // Окно исчезнет через 2 секунды
+            showConfirmButton: false,
+        });
+        //alert('Не удалось сохранить рецепт.');
     }
 }

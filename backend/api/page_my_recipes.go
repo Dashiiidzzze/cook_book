@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-// рендеринг страницы
+// рендеринг страницы "мои рецепты"
 func PageMyRecipes(w http.ResponseWriter, r *http.Request) {
 	log.Println("Запрос к странице мои рецепты:", r.URL.Path)
 	if r.URL.Path != "/myrecipes" {
@@ -19,7 +19,7 @@ func PageMyRecipes(w http.ResponseWriter, r *http.Request) {
 
 	// Указываем, что возвращаем HTML
 	w.Header().Set("Content-Type", "text/html")
-	http.ServeFile(w, r, "../frontend/myrecipes.html") // Путь к HTML-файлу
+	http.ServeFile(w, r, "../frontend/myrecipes.html")
 }
 
 // отправка рецептов
@@ -50,7 +50,7 @@ func PageMyRecipesRecipes(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(recipes)
 }
 
-// deleteRecipe обрабатывает запрос на удаление рецепта из БД
+// запрос на удаление рецепта из БД
 func PageMyRecipesDeleteRecipe(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
 		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
@@ -62,13 +62,6 @@ func PageMyRecipesDeleteRecipe(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Не указан ID рецепта", http.StatusBadRequest)
 		return
 	}
-
-	// // Получаем ID рецепта из параметров запроса
-	// recipeID := r.URL.Query().Get("id")
-	// if recipeID == "" {
-	// 	http.Error(w, "Не указан ID рецепта", http.StatusBadRequest)
-	// 	return
-	// }
 
 	userID := internal.GetUserIDToken(w, r)
 
@@ -83,6 +76,7 @@ func PageMyRecipesDeleteRecipe(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fmt.Sprintf("Рецепт с ID %s успешно удален", recipeID)))
 }
 
+// фильтрация
 func PageMyRecipesFilters(w http.ResponseWriter, r *http.Request) {
 	log.Println("Запрос к фильтрам:", r.URL.Path)
 	if r.URL.Path != "/myrecipes/filter" {

@@ -17,7 +17,7 @@ func PageMain(w http.ResponseWriter, r *http.Request) {
 
 	// Указываем, что возвращаем HTML
 	w.Header().Set("Content-Type", "text/html")
-	http.ServeFile(w, r, "../frontend/main.html") // Путь к HTML-файлу
+	http.ServeFile(w, r, "../frontend/main.html")
 }
 
 // отправка рецептов на главную
@@ -46,6 +46,7 @@ func PageMainRecipes(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(recipes)
 }
 
+// фильтрация
 func PageMainFilters(w http.ResponseWriter, r *http.Request) {
 	log.Println("Запрос к фильтрам:", r.URL.Path)
 	if r.URL.Path != "/main/filters" {

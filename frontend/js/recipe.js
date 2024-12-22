@@ -185,48 +185,9 @@ async function submitCommentToServer(commentText) {
         //alert('Комментарий успешно отправлен!');
         console.log('Комментарий добавлен.');
 
-        // Можно добавить обновление комментариев
-        //fetchAndDisplayComments(); // функция для получения и отображения комментариев
         fetchRecipe() // перезагрузка страницы
     } catch (error) {
         console.error('Ошибка:', error);
         alert('Не удалось отправить комментарий.');
     }
 }
-
-// async function fetchAndDisplayComments() {
-//     try {
-//         const recipeId = new URLSearchParams(window.location.search).get('recipe_id');
-//         if (!recipeId) {
-//             console.error('ID рецепта отсутствует.');
-//             return;
-//         }
-
-//         const response = await fetch(`/recipe/comments?recipe_id=${recipeId}`);
-//         if (!response.ok) {
-//             throw new Error('Ошибка при загрузке комментариев.');
-//         }
-
-//         const { comments } = await response.json();
-
-//         const commentsContainer = document.getElementById('comments');
-//         commentsContainer.innerHTML = '<h4>Комментарии:</h4>'; // Очищаем контейнер и добавляем заголовок
-
-//         if (comments.length > 0) {
-//             comments.forEach(comment => {
-//                 const commentCard = document.createElement('div');
-//                 commentCard.className = 'comment-card';
-//                 commentCard.innerHTML = `
-//                     <p><strong>${comment.username}:</strong> ${comment.text}</p>
-//                 `;
-//                 commentsContainer.appendChild(commentCard);
-//             });
-//         } else {
-//             commentsContainer.innerHTML += '<p>Пока никто не написал комментарии к рецепту, будьте первым!</p>';
-//         }
-//     } catch (error) {
-//         console.error('Ошибка:', error);
-//         alert('Не удалось загрузить комментарии.');
-//     }
-// }
-

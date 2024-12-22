@@ -41,13 +41,6 @@ function displayCategories(categories) {
         categoryCard.className = 'categories-card';
         categoryCard.setAttribute('data-id', category.id);  // Добавляем ID категории для использования при запросе
 
-        // // Если фото в категории есть, устанавливаем его как фон
-        // if (category.photo) {
-        //     categoryCard.style.backgroundImage = `url('data:image/jpeg;base64,${category.photo}')`;
-        //     categoryCard.style.backgroundSize = 'cover';  // Сделать так, чтобы фото заполняло карточку
-        //     categoryCard.style.backgroundPosition = 'center';  // Центрируем изображение
-        // }
-
         const categoryName = document.createElement('h3');
         categoryName.textContent = category.name;
 

@@ -126,7 +126,6 @@ function displayRecipes(recipes) {
         recipeCard.addEventListener('click', () => {
             window.location.href = `/recipe?recipe_id=${recipe.id}`; // Переход на страницу рецепта
         });
-        // <p>Ингредиенты: ${recipe.ingredients.join(', ')}</p>
         recipesContainer.appendChild(recipeCard);
     });
 }
@@ -166,7 +165,6 @@ async function deleteRecipe(recipeId) {
             timer: 2000, // Окно исчезнет через 2 секунды
             showConfirmButton: false,
         });
-        //alert('Рецепт успешно удален.');
         fetchLatestRecipes(); // Перезагрузка списка рецептов
     } catch (error) {
         console.error('Ошибка:', error);

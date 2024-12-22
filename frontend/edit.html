@@ -8,6 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Рецепты</title>
     <link rel="stylesheet" href="css/edit.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
     <!-- Шапка -->
@@ -42,9 +43,7 @@
                 <div class="form-group">
                     <label for="ingredients">Ингредиенты:</label>
                     <div id="ingredients">
-                        <div class="ingredients-container">
-                            
-                        </div>
+
                     </div>
                     <button type="button" id="addIngredient">Добавить ингредиент</button>
                 </div>
@@ -57,11 +56,11 @@
                 <div class="form-group">
                     <label for="steps">Этапы приготовления блюда:(опишите этап и прикрепите фото)</label>
                     <div id="steps">
-                        <div class="steps-container">
+                        <!-- <div class="steps-container"> -->
                             <!-- <textarea type="text" class="step" placeholder="Этап приготовления" required></textarea> -->
                             <!-- <label for="photo">Фото:</label> -->
                             <!-- <input type="file" class="step-photo" id="step-photo" name="photo" accept="image/*"> -->
-                        </div>
+                        <!-- </div> -->
                     </div>
                     <button type="button" id="addStep">Добавить этап</button>
                 </div>
@@ -92,5 +91,6 @@
     </main>
 
     <script src="js/edit.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

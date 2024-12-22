@@ -13,6 +13,7 @@ type RequestDataCopy struct {
 	RecipeID string `json:"recipeId"`
 }
 
+// копирование рецепта к другому пользователю
 func CopyRecipe(w http.ResponseWriter, r *http.Request) {
 	log.Println("Запрос на копирование рецепта:", r.URL.Path)
 	if r.URL.Path != "/api/add-to-myrecipes" {
@@ -91,7 +92,5 @@ func CopyRecipe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//w.Header().Set("Content-Type", "application/json")
 	http.Redirect(w, r, "/myrecipes", http.StatusOK)
-	//json.NewEncoder(w).Encode(string("Рецепт успешно скопирован"))
 }

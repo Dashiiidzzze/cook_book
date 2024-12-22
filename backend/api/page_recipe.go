@@ -9,6 +9,7 @@ import (
 	"strconv"
 )
 
+// рендеринг страницы просмотра рецепта
 func PageRecipe(w http.ResponseWriter, r *http.Request) {
 	log.Println("Загрузка страницы рецепта:", r.URL.Path)
 	if r.URL.Path != "/recipe" {
@@ -18,7 +19,7 @@ func PageRecipe(w http.ResponseWriter, r *http.Request) {
 
 	// Указываем, что возвращаем HTML
 	w.Header().Set("Content-Type", "text/html")
-	http.ServeFile(w, r, "../frontend/recipe.html") // Путь к вашему HTML-файлу
+	http.ServeFile(w, r, "../frontend/recipe.html")
 }
 
 // Структура для объединённого ответа
@@ -66,7 +67,6 @@ func PageRecipeView(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Формируем ответ
 	response := RecipeResponse{
 		Recipe:   recipe,
 		Comments: comments,

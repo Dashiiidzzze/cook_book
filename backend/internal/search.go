@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// Обработчик запроса
+// Обработчик поиска рецептов
 func SearchRecipes(w http.ResponseWriter, r *http.Request) {
 	// Парсинг параметров запроса
 	searchText := r.URL.Query().Get("search")
@@ -17,7 +17,6 @@ func SearchRecipes(w http.ResponseWriter, r *http.Request) {
 	category := r.URL.Query().Get("category")
 	myrecipe := r.URL.Query().Get("myrecipe")
 
-	// Логирование запроса
 	log.Printf("Получен запрос: search=%s, filters=%s, category=%s", searchText, ingredients, category)
 
 	// Разбор фильтров (если они переданы)

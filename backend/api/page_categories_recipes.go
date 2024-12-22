@@ -18,7 +18,7 @@ func PageCategoriesRecipes(w http.ResponseWriter, r *http.Request) {
 
 	// Указываем, что возвращаем HTML
 	w.Header().Set("Content-Type", "text/html")
-	http.ServeFile(w, r, "../frontend/categories_recipes.html") // Путь к вашему HTML-файлу
+	http.ServeFile(w, r, "../frontend/categories_recipes.html")
 }
 
 // вывод рецептов в категории
@@ -38,7 +38,7 @@ func PageCategoriesRecipesView(w http.ResponseWriter, r *http.Request) {
 	filters := map[string]interface{}{
 		"category_id": categoryId, // Фильтр по категории
 		"is_private":  false,      // Только общедоступные
-		"limit":       20,         // Лимит в 10 рецептов
+		"limit":       20,         // Лимит в 20 рецептов
 	}
 
 	recipes, err := repo.GetRecipesWithFilters(filters)
@@ -52,6 +52,7 @@ func PageCategoriesRecipesView(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(recipes)
 }
 
+// фильтры
 func PageCategoriesRecipesFilters(w http.ResponseWriter, r *http.Request) {
 	log.Println("Запрос к фильтрам:", r.URL.Path)
 	if r.URL.Path != "/categories-recipes/filters" {

@@ -13,6 +13,7 @@ type ConfigStruct struct {
 	DatabasePort int    `json:"database_port"`
 }
 
+// чтение конфигов из файла
 func ConfigRead() (string, int, int) {
 	file, err := os.ReadFile("../config/config.json")
 	if err != nil {
