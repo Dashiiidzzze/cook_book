@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рецепты</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="shapka">
+        <div class="toolbar">
+            <a href="/main" class="nav-link">Главная</a>
+            <a href="/categories" class="nav-link">Категории</a>
+            <a href="/myrecipes" class="nav-link">Мои рецепты</a>
+            <a href="/create" class="nav-link">Добавить рецепт</a>
+            <a href="/profile" class="nav-link">Профиль</a>
+            <!-- <a href="/auth" class="nav-link">Войти</a> -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        </div>
+    </header>
+
+    <div id="wrapper" class="wrapper">
+        <form action="">
+            <h1>Войдите в аккаунт</h1>
+        <div class="input-box">
+            <input type="text" id="username" placeholder="Логин" required>
+            <i class='bx bx-user'></i>
+        </div>
+        <div class="input-box">
+            <input type="password" id="password" placeholder="Пароль" required>
+        </div>
+        <div class="input-box" id="confirm-password-box" style="display: none;">
+            <input type="password" id="confirm-password" placeholder="Подтвердите пароль">
+        </div>
+        <div class="remember">
+            <!-- <label for=""><input type="checkbox">Запомнить меня</label> -->
+            <!-- <a href="#">Забыли пароль?</a> --> 
+        </div>
+
+        <button type="submit" class="btn" name="action" value="login">  Войти  </button>
+
+        <div class="register-link" id="register-link">
+            <!-- <p>Еще нет аккаунта? <a href="#">Зарегистрироваться</a></p> -->
+            <p>Еще нет аккаунта? <button type="button" class="btnStr" name="action" value="register" id="register-btn">Зарегистрироваться</button></p>
+        </div>
+        </form>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

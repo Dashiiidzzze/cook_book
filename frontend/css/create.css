@@ -1,0 +1,201 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff9c1;
+}
+
+/* Шапка */
+.shapka {
+    background: url('../images/backgraund-fastfood.jpg') no-repeat center center;
+    background-size: cover;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 65px;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 150px 0;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: white;
+    background-color: rgba(37, 30, 43);
+    padding: 10px 15px;
+    margin: 0 20px;
+    border-radius: 5px;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    position: relative;
+    top: 131px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-link:hover {
+    background-color: #ff7c00;
+    color: white;
+}
+
+/* Стили для формы */
+#recipeForm {
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 100px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+    margin: 0 0 10px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 20px;         /* Размер шрифта */
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Стиль для заголовка h2 */
+#recipes-section h2 {
+    text-transform: uppercase; /* Преобразует текст в верхний регистр */
+    text-align: center;        /* Центрирует текст по горизонтали */
+    font-size: 24px;           /* Увеличивает размер текста */
+    font-weight: bold;         /* Делает текст жирным */
+    margin: 20px 0;            /* Отступы сверху и снизу */
+    color: #333;               /* Цвет текста (можно изменить под стиль сайта) */
+}
+  
+
+/* Для поля времени приготовления */
+#cook_time_hours, #cook_time_minutes {
+    width: 15%;
+    display: inline-block;
+    margin-right: 2px;
+}
+
+#cook_time_hours, #cook_time_minutes, span {
+    vertical-align: middle;
+}
+
+textarea .step{
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Стили для textarea */
+textarea {
+    width: 100%;
+    min-height: 130px;
+    resize: vertical;
+    font-size: 16px;         /* Размер шрифта */
+}
+
+/* Кнопка добавления ингредиента */
+.ingredients-container {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 10px;               /* Отступ между полями */
+}
+
+.ingredient, .quantity {
+    flex: 1;                 /* Поля будут растягиваться на равную ширину */
+    padding: 8px;            /* Внутренние отступы для комфорта */
+    font-size: 16px;         /* Размер шрифта */
+    margin-bottom: 10px;
+}
+
+/* .ingredient {
+    margin-bottom: 10px;
+    padding: 8px;
+} */
+
+
+/* Кнопка добавления ингредиента */
+.steps-container {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 10px;               /* Отступ между полями */
+}
+
+.step, .step-photo {
+    flex: 1;                 /* Поля будут растягиваться на равную ширину */
+    padding: 8px;            /* Внутренние отступы для комфорта */
+    font-size: 16px;         /* Размер шрифта */
+    margin-bottom: 10px;
+}
+
+.photo {
+    display: flex;
+    padding: 8px;            /* Внутренние отступы для комфорта */
+    font-size: 16px;         /* Размер шрифта */
+}
+
+.categories {
+    font-size: 16px;         /* Размер шрифта */
+}
+
+
+
+/* Стили для галочки и текста в одной строке */
+.checkbox-group {
+    display: flex;
+    /* justify-content: space-between; Размещает элементы по краям */
+    align-items: center; /* Выравнивание по центру */
+    margin-bottom: 15px; /* Отступ снизу */
+}
+
+.checkbox-group label {
+    margin: 0;
+    font-size: 20px; /* Размер шрифта как у других label */
+    font-weight: bold;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto; /* Сбрасывает ширину по умолчанию */
+    transform: scale(1.2); /* Немного увеличивает галочку */
+    margin-left: 10px; /* Небольшой отступ между текстом и галочкой */
+}
+
+
+
+
+button {
+    padding: 10px 15px;
+    background-color: #ff7c00;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #e67300;
+}
+
+button:focus {
+    outline: none;
+}
+

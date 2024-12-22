@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр рецепта</title>
+    <link rel="stylesheet" href="css/recipe.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="shapka">
+        <div class="toolbar">
+            <a href="/main" class="nav-link">Главная</a>
+            <a href="/categories" class="nav-link">Категории</a>
+            <a href="/myrecipes" class="nav-link">Мои рецепты</a>
+            <a href="/create" class="nav-link">Добавить рецепт</a>
+            <a href="/profile" class="nav-link">Профиль</a>
+        </div>
+    </header>
+
+    <!-- Контейнер для рецепта -->
+    <div id="recipe" class="recipe-container">
+        <!-- Здесь будет отображаться рецепт-->
+    </div>
+
+    <!-- Контейнер для комментариев -->
+    <div id="add-comment-container">
+        <textarea id="comment-text" placeholder="Напишите ваш комментарий..." rows="4"></textarea>
+        <button id="submit-comment" onclick="submitComment()">Отправить</button>
+    </div>
+    <div id="comments" class="comments-container">
+        <!-- Здесь будут отображаться комментарии -->
+    </div>
+
+    <script src="js/recipe.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
+

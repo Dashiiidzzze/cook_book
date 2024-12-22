@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, private">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Рецепты</title>
+    <link rel="stylesheet" href="css/create.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="shapka">
+        <div class="toolbar">
+            <a href="/main" class="nav-link">Главная</a>
+            <a href="/categories" class="nav-link">Категории</a>
+            <a href="/myrecipes" class="nav-link">Мои рецепты</a>
+            <a href="/create" class="nav-link">Добавить рецепт</a>
+            <a href="/profile" class="nav-link">Профиль</a>
+            <!-- <a href="/auth" class="nav-link">Войти</a> -->
+        </div>
+    </header>
+
+    <!-- Секция полей для заполнения -->
+    <main class="main-content">
+        <section id="recipes-section">
+            <h2>Создание рецепта</h2>
+            <form id="recipeForm">
+                <div class="form-group">
+                    <label for="name">Название рецепта:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cook_time">Время приготовления (часы:минуты):</label>
+                    <input type="number" id="cook_time_hours" name="cook_time_hours" min="0" max="96" step="1" required>
+                    <span>:</span>
+                    <input type="number" id="cook_time_minutes" name="cook_time_minutes" min="0" max="59" step="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ingredients">Ингредиенты:</label>
+                    <div id="ingredients">
+                        <div class="ingredients-container">
+                            <input type="text" class="ingredient" placeholder="Ингредиент" required>
+                            <input type="text" class="quantity" placeholder="Количество" required>
+                        </div>
+                    </div>
+                    <button type="button" id="addIngredient">Добавить ингредиент</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="instructions">Инструкции:</label>
+                    <textarea id="instructions" name="instructions" placeholder="Общие инструкции к приготовлению, описание блюда" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="steps">Этапы приготовления блюда:(опишите этап и прикрепите фото)</label>
+                    <div id="steps">
+                        <div class="steps-container">
+                            <textarea type="text" class="step" placeholder="Этап приготовления" required></textarea>
+                            <!-- <label for="photo">Фото:</label> -->
+                            <input type="file" class="step-photo" id="step-photo" name="photo" accept="image/*">
+                        </div>
+                    </div>
+                    <button type="button" id="addStep">Добавить этап</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="photo">Главное фото:</label>
+                    <input type="file" class="photo" id="photo" name="photo" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label for="categories">Категории:(для выбора зажмите contrl)</label>
+                    <select class="categories"id="categories" name="categories[]" multiple required>
+                        <!-- Категории будут загружаться через JS -->
+                    </select>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label for="public">Выложить в общий доступ</label>
+                    <input type="checkbox" id="public" name="public">
+                </div>
+
+                <button type="submit">Сохранить рецепт</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/create.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

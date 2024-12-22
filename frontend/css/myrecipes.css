@@ -1,0 +1,227 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff9c1;
+}
+
+/* Шапка */
+.shapka {
+    background: url('../images/backgraund-fastfood.jpg') no-repeat center center;
+    background-size: cover;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Отступ от фотографии до тулбара */
+}
+
+.toolbar {
+    display: flex; /* Горизонтальное расположение кнопок */
+    justify-content: center; /* Центрирование кнопок по горизонтали */
+    align-items: center; /* Выравнивание кнопок по вертикали */
+    margin: 150px 0; /* Отступы сверху и снизу */
+}
+
+.nav-link {
+    text-decoration: none;
+    color: white;                           /* Белый текст */
+    background-color: rgba(37, 30, 43);   /* чертныйй фон */
+    padding: 10px 15px;                       /* Внутренние отступы */
+    margin: 0 20px;                           /* Отступы между кнопками */
+    border-radius: 5px;                       /* Скруглённые углы */
+    font-size: 20px;                          /* Размер текста */
+    transition: background-color 0.3s ease;   /* Плавный переход цвета фона */
+
+    position: relative;
+    top: 200px; /* Сдвигаем блок вниз */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-link:hover {   /* Более тёмный оттенок зелёного при наведении */
+    background-color: #ff7c00;
+    /* background-color: rgba(255, 255, 255, 0.7); */
+    color: white;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    top: 250px; /* Сдвигаем блок вниз */
+    margin-top: 100px;
+}
+
+.search-bar input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-bar button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #ff7c00;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #e56e00; /* Темнее оранжевый при наведении */
+}
+
+.search-bar button:active {
+    background-color: #cc5a00; /* Еще темнее при клике */
+    transform: scale(0.98); /* Легкое уменьшение при нажатии */
+}
+
+/* Стиль для заголовка h2 */
+#recipes-section h2 {
+    text-transform: uppercase; /* Преобразует текст в верхний регистр */
+    text-align: center;        /* Центрирует текст по горизонтали */
+    font-size: 24px;           /* Увеличивает размер текста */
+    font-weight: bold;         /* Делает текст жирным */
+    margin: 65px 0;            /* Отступы сверху и снизу */
+    color: #333;               /* Цвет текста (можно изменить под стиль сайта) */
+}
+  
+
+.filter-popup {
+    display: none;
+    position: absolute;
+    top: 350px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 10;
+    width: 465px; /* Ширина окна */
+}
+
+.filter-popup label {
+    display: block;
+    margin: 5px 0;
+}
+
+.filter-popup input[type="checkbox"] {
+    margin-right: 10px; /* Отступ справа от чекбокса */
+    cursor: pointer;
+    width: 30px;
+    color: #ff7c00;
+}
+
+/* стиль рецептов */
+.recipe-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+
+    /* position: relative;
+    top: 10px; 
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+
+/* Стиль для контейнера рецепта */
+.recipe-card {
+    display: flex; /* Используем flexbox */
+    flex-direction: row; /* Располагаем элементы в строку */
+    justify-content: flex-start; /* Размещаем элементы по левому краю */
+    gap: 20px; /* Добавляем отступ между картинкой и текстом */
+    width: 1000px; /* Ширина карточки */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    padding: 20px;
+    transition: transform 0.2s ease;
+}
+
+.recipe-card:hover {
+    transform: scale(1.05);
+}
+
+/* Стили для изображения рецепта */
+.recipe-photo {
+    width: 300px; /* Фиксированная ширина изображения */
+    height: 200px; /* Фиксированная высота изображения */
+    object-fit: cover; /* Сохраняем пропорции изображения */
+    border-radius: 8px;
+    margin-left: auto;
+}
+
+/* Стиль для текста рецепта */
+.recipe-card h3 {
+    margin: 20px 20px 30px; /* Убираем лишние отступы */
+    font-size: 25px; /* Размер шрифта */
+    color: #ff7c00; /* Цвет текста */
+}
+.recipe-card p {
+    margin: 20px 20px 20px; /* Убираем лишние отступы */
+    font-size: 16px; /* Размер шрифта */
+    color: #333; /* Цвет текста */
+}
+
+.recipe-card p {
+    font-size: 16px; /* Уменьшаем размер шрифта для описания */
+    color: #555; /* Цвет для описания */
+}
+
+.delete-myrecipes, .edit-myrecipes{
+    background-color: #ff7c00; /* Оранжевый фон */
+    color: white; /* Белый текст */
+    border: none; /* Без рамки */
+    padding: 10px 20px; /* Внутренние отступы */
+    border-radius: 5px; /* Скругленные углы */
+    font-size: 16px; /* Размер текста */
+    cursor: pointer; /* Курсор в виде указателя */
+    transition: background-color 0.3s ease; /* Плавный переход при наведении */
+    margin-left : 20px; /* Отступ сверху */
+    margin-bottom: 10px;
+}
+
+.delete-myrecipes:hover, .edit-myrecipes:hover{
+    background-color: #e56e00; /* Темнее оранжевый при наведении */
+}
+
+.delete-myrecipes:active, .edit-myrecipes:active{
+    background-color: #cc5a00; /* Еще темнее при клике */
+    transform: scale(0.98); /* Легкое уменьшение при нажатии */
+}
+
+/* Оранжевые кнопки для всплывающего окошка */
+button {
+    background-color: #ff7c00; /* Оранжевый цвет */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #e66b00; /* Темнее при наведении */
+}
+
+button:focus {
+    outline: none; /* Убираем обводку */
+}
+
+/* Стиль кнопок в модальном окне */
+#confirmYes, #confirmNo {
+    margin: 10px;
+}

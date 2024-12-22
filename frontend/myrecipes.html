@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, private">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Главная страница - Кулинарная книга</title>
+    <link rel="stylesheet" href="css/myrecipes.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="shapka">
+        <div class="toolbar">
+            <a href="/main" class="nav-link">Главная</a>
+            <a href="/categories" class="nav-link">Категории</a>
+            <a href="/myrecipes" class="nav-link">Мои рецепты</a>
+            <a href="/create" class="nav-link">Добавить рецепт</a>
+            <a href="/profile" class="nav-link">Профиль</a>
+            <!-- <a href="/auth" class="nav-link">Войти</a> -->
+        </div>
+        <div class="search-bar">
+            <input type="text" id="searchBar" placeholder="Искать рецепт...">
+            <button id="filterButton">Фильтры</button>
+            <div id="filters" class="filter-popup">
+            
+            </div>
+            <button id="searchButton">&#128269;</button> <!-- Кнопка для запуска поиска -->
+        </div>
+    </header>
+
+    <!-- Секция рецептов -->
+    <main>
+        <section id="recipes-section">
+            <h2>Мои последние рецепты</h2>
+            <div id="recipes" class="recipe-container">
+                <!-- Здесь будут загружены рецепты -->
+            </div>
+        </section>
+    </main>
+
+    <script src="js/myrecipes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+<!-- Добавим HTML для модального окна -->
+<div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
+    <div style="background: white; padding: 20px; border-radius: 5px; text-align: center;">
+        <p id="confirmText"></p>
+        <button id="confirmYes">Да</button>
+        <button id="confirmNo">Отмена</button>
+    </div>
+</div>
+
+</html>

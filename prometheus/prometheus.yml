@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s    # Интервал опроса всех метрик (по умолчанию 15 секунд)
+
+scrape_configs:
+  - job_name: "web"       # Название задачи сбора метрик
+    static_configs:
+      - targets: ["web:8080"]  # Адрес сервиса для сбора метрик
+        labels:
+          instance: "backend_server"  # Дополнительная метка для удобства мониторинга
+  - job_name: "cookbook_db"
+    static_configs:
+      - targets: ["web:8080"]

@@ -1,0 +1,80 @@
+services:
+  web:
+    build:
+      context: ./backend             # Путь к Dockerfile
+    ports:
+      - "${API_PORT}:${API_PORT}"                  # Проброс порта для веб-приложения
+    volumes:
+      - ./config:/config         # монтируем папку для просмотра внутри контейнера
+      - ./frontend:/frontend
+    environment:
+      # - DB_HOST=${DB_HOST}
+      # - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      # - API_PORT=${API_PORT}
+    depends_on:
+      - db                           # Сначала запускается база данных
+    healthcheck:
+      test: ["CMD", "sh", "-c", " \
+        # Проверка использования процессора и памяти \
+        [ $(vmstat 1 2 | tail -n 1 | awk '{print $13}') -lt 80 ] && \
+        [ $(vmstat 1 2 | tail -n 1 | awk '{print $14}') -lt 80 ] && \
+        # Проверка использования диска \
+        [ $(df / | tail -1 | awk '{print $5}' | sed 's/%//') -lt 80 ] && \
+        # Проверка количества открытых файлов \
+        [ $(lsof | wc -l) -lt 1000 ] && \
+        # Проверка скорости записи на диск (iostat) \
+        [ $(iostat -d | grep -E '^[a-zA-Z]' | awk '{print $2}' | cut -d'.' -f1) -gt 100 ] \
+        "] 
+      interval: 30s                      # Интервал между проверками
+      retries: 3                         # Количество неудачных попыток перед маркером неработоспособности
+      start_period: 10s                  # Задержка до начала проверок
+      timeout: 5s                        # Время ожидания выполнения проверки
+
+  db:
+    image: postgres:alpine           # Готовый образ PostgreSQL для Alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}   # Пользователь базы данных
+      POSTGRES_PASSWORD: ${DB_PASSWORD} # Пароль пользователя
+      POSTGRES_DB: ${DB_NAME}          # Имя базы данных
+    ports:
+      - "${DB_PORT}:5432"                  # Проброс порта для PostgreSQL
+    volumes:
+      - db_data:/var/lib/postgresql/data # Том для хранения данных
+      - ./initdb:/docker-entrypoint-initdb.d # все скрипты из этой папки должны выполняться
+    restart: always                  # Перезапуск при сбое
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-h", "${DB_HOST}", "-p", "${DB_PORT}", "-d", "${DB_NAME}"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 5s
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER={GRAFANA_USER}        # Логин админа Grafana
+      - GF_SECURITY_ADMIN_PASSWORD={GRAFANA_PASSWORD}    # Пароль админа Grafana das10002
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    restart: always
+
+volumes:
+  db_data:                           # Том для базы данных
+  grafana_data:
